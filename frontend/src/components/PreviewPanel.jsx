@@ -7,6 +7,7 @@ import Editor from '@monaco-editor/react';
 export default function PreviewPanel({ website }) {
   const [activeTab, setActiveTab] = useState('preview');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const downloadCode = () => {
     if (!website) return;
