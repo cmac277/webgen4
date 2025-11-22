@@ -237,6 +237,7 @@ async def generate_website(request: GenerateWebsiteRequest):
     ).sort("timestamp", 1).to_list(100)
     
     # Get the latest generated website for context (for iterative editing)
+    # CRITICAL: If a website exists, this is EDIT MODE - never create new
     current_website = None
     try:
         websites = await db.generated_websites.find(
@@ -246,7 +247,19 @@ async def generate_website(request: GenerateWebsiteRequest):
         
         if websites:
             current_website = websites[0]
-            logger.info(f"Found existing website for session {request.session_id} - will use for iterative editing")
+            logger.info("=" * 80)
+            logger.info(f"🔒 EDIT-ONLY MODE ENFORCED")
+            logger.info(f"Session: {request.session_id}")
+            logger.info(f"Existing website found - ALL prompts will EDIT this website")
+            logger.info(f"User request: {request.prompt}")
+            logger.info(f"This will be treated as: MODIFY existing website")
+            logger.info("=" * 80)
+        else:
+            logger.info("=" * 80)
+            logger.info(f"🆕 NEW WEBSITE MODE")
+            logger.info(f"No existing website - creating from scratch")
+            logger.info(f"User request: {request.prompt}")
+            logger.info("=" * 80)
     except Exception as e:
         logger.warning(f"Could not retrieve existing website: {str(e)}")
     
