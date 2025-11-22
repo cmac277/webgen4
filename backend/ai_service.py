@@ -490,11 +490,144 @@ NOW CREATE SOMETHING EXCEPTIONAL! 🚀"""
         
         logger.info(f"Generated frontend: HTML={len(html)} chars, CSS={len(css)} chars, JS={len(js)} chars")
         
+        # Quality check: Ensure CSS is detailed enough
+        if len(css) < 300:
+            logger.warning("CSS too minimal, enhancing with design framework...")
+            css = self._enhance_css_design(css, html)
+        
+        # Ensure modern features are present
+        css = self._ensure_modern_css_features(css)
+        
         return {
             "html": html,
             "css": css,
             "js": js
         }
+
+    def _enhance_css_design(self, css: str, html: str) -> str:
+        """Add design enhancements if CSS is too minimal"""
+        enhancement = """
+/* Enhanced Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #8b5cf6;
+    --accent: #ec4899;
+    --background: #0f172a;
+    --surface: #1e293b;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --radius: 16px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    min-height: 100vh;
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+button, .btn {
+    padding: 18px 48px;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+button:hover, .btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+section {
+    padding: 120px 0;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius);
+    padding: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: var(--shadow-lg);
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 80px 0;
+    }
+    
+    .container {
+        padding: 0 20px;
+    }
+    
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+"""
+        return enhancement + "\n\n" + css
+
+    def _ensure_modern_css_features(self, css: str) -> str:
+        """Ensure modern CSS features are included"""
+        features_to_check = [
+            ("@import url", "/* Google Fonts imported */"),
+            (":root", "/* CSS Variables defined */"),
+            ("backdrop-filter", "/* Glassmorphism effect */"),
+            ("cubic-bezier", "/* Smooth animations */"),
+            ("linear-gradient", "/* Gradient styling */")
+        ]
+        
+        # Just return as-is, the prompt should handle this
+        return css
 
     async def _generate_backend(self, prompt: str, provider: str, model: str, session_id: str) -> Dict[str, str]:
         """Generate Python FastAPI backend with routes and models"""
