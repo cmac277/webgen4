@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Wand2, Upload, Loader2 } from 'lucide-react';
+import { Send, Wand2, Upload, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import axios from 'axios';
@@ -9,8 +9,9 @@ import ReactMarkdown from 'react-markdown';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function ChatInterface({ messages, onSendMessage, onGenerateWebsite, isLoading, sessionId }) {
+export default function ChatInterface({ messages, onSendMessage, onGenerateWebsite, isLoading, sessionId, generationSteps }) {
   const [input, setInput] = useState('');
+  const [showSteps, setShowSteps] = useState(true);
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -95,9 +96,9 @@ export default function ChatInterface({ messages, onSendMessage, onGenerateWebsi
               }`}
             >
               {msg.role === 'assistant' ? (
-                <ReactMarkdown className="prose prose-invert prose-sm max-w-none">
-                  {msg.content}
-                </ReactMarkdown>
+                <div className="prose-sm max-w-none text-slate-100">
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
               ) : (
                 <p className="text-sm">{msg.content}</p>
               )}
@@ -106,10 +107,42 @@ export default function ChatInterface({ messages, onSendMessage, onGenerateWebsi
         ))}
 
         {isLoading && (
-          <div className="flex justify-start" data-testid="loading-indicator">
-            <div className="bg-slate-800 rounded-2xl px-4 py-3 flex items-center space-x-2">
-              <Loader2 className="w-4 h-4 animate-spin text-purple-400" />
-              <span className="text-sm text-slate-300">Thinking...</span>
+          <div className="space-y-3" data-testid="loading-indicator">
+            <div className="flex justify-start">
+              <div className="bg-slate-800 rounded-2xl px-4 py-3 max-w-[80%]">
+                <div 
+                  className="flex items-center justify-between cursor-pointer"
+                  onClick={() => setShowSteps(!showSteps)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="w-4 h-4 animate-spin text-purple-400" />
+                    <span className="text-sm font-medium text-slate-300">Generating your website...</span>
+                  </div>
+                  {showSteps ? (
+                    <ChevronUp className="w-4 h-4 text-slate-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                  )}
+                </div>
+                
+                {showSteps && generationSteps && generationSteps.length > 0 && (
+                  <div className="mt-3 space-y-2 border-t border-slate-700 pt-3">
+                    {generationSteps.map((step, idx) => (
+                      <div key={idx} className="flex items-start space-x-2">
+                        <div className={`mt-1 w-2 h-2 rounded-full ${
+                          step.status === 'complete' ? 'bg-green-500' :
+                          step.status === 'active' ? 'bg-purple-500 animate-pulse' :
+                          'bg-slate-600'
+                        }`} />
+                        <div className="flex-1">
+                          <p className="text-xs text-slate-300 font-medium">{step.title}</p>
+                          <p className="text-xs text-slate-500">{step.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
