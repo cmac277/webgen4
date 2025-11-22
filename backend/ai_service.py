@@ -744,6 +744,74 @@ MAKE IT LOOK AND FUNCTION LIKE THE REAL THING!"""
         
         logger.info(f"Initial extraction: HTML={len(html)} chars, CSS={len(css)} chars, JS={len(js)} chars")
         
+        # CRITICAL EDIT VALIDATION: If in edit mode, verify AI didn't regenerate from scratch
+        if edit_mode and current_website:
+            original_html = current_website.get('html_content', '')
+            original_length = len(original_html)
+            new_length = len(html)
+            
+            # Check if lengths are drastically different (indicates regeneration, not editing)
+            length_diff_percent = abs(new_length - original_length) / original_length * 100 if original_length > 0 else 100
+            
+            # Extract some key identifiers from original to check preservation
+            original_classes = set(re.findall(r'class=["\']([^"\']+)["\']', original_html))
+            new_classes = set(re.findall(r'class=["\']([^"\']+)["\']', html)) if html else set()
+            preserved_classes = len(original_classes & new_classes) / len(original_classes) * 100 if original_classes else 0
+            
+            logger.info(f"📊 EDIT MODE VALIDATION:")
+            logger.info(f"   Original HTML: {original_length} chars")
+            logger.info(f"   New HTML: {new_length} chars")
+            logger.info(f"   Length diff: {length_diff_percent:.1f}%")
+            logger.info(f"   Classes preserved: {preserved_classes:.1f}%")
+            
+            # If more than 70% length change OR less than 30% classes preserved = likely regenerated
+            if length_diff_percent > 70 and preserved_classes < 30:
+                logger.error("❌ EDIT MODE FAILURE DETECTED!")
+                logger.error(f"   AI appears to have REGENERATED instead of EDITED")
+                logger.error(f"   Length changed by {length_diff_percent:.1f}%")
+                logger.error(f"   Only {preserved_classes:.1f}% of classes preserved")
+                logger.error(f"   Forcing AI to try again with STRONGER edit instructions...")
+                
+                # Force retry with EXTREMELY explicit instructions
+                retry_prompt = f"""⚠️⚠️⚠️ YOU FAILED THE PREVIOUS ATTEMPT ⚠️⚠️⚠️
+
+You were asked to EDIT existing code, but you REGENERATED from scratch instead!
+
+THIS IS YOUR SECOND CHANCE. YOU **MUST** EDIT THE EXISTING CODE.
+
+EXISTING HTML TO EDIT:
+```html
+{original_html[:10000]}
+... (truncated for brevity, but use the FULL code)
+```
+
+USER'S EDIT REQUEST: {prompt}
+
+MANDATORY INSTRUCTIONS:
+1. START with the existing HTML above
+2. FIND the specific elements/sections to change
+3. MAKE ONLY those changes
+4. RETURN the complete code with edits
+5. DO NOT write new HTML from scratch
+6. The returned HTML MUST be recognizably similar to the original
+7. Most class names, IDs, and structure MUST be preserved
+
+If you regenerate from scratch again, you will be marked as FAILED."""
+
+                retry_chat = LlmChat(
+                    api_key=self.api_key,
+                    session_id=f"{session_id}_edit_retry",
+                    system_message="You are editing existing code. PRESERVE the existing structure and make ONLY requested changes."
+                )
+                retry_chat.with_model(provider, model)
+                
+                retry_response = await retry_chat.send_message(UserMessage(text=retry_prompt))
+                html = self._extract_code_block(retry_response, "html") or self._extract_html_direct(retry_response)
+                
+                logger.info(f"Retry extraction: {len(html)} chars")
+            else:
+                logger.info(f"✅ Edit validation passed - code appears to be edited, not regenerated")
+        
         # Fallback extraction - try multiple methods
         if not html:
             logger.info("Primary HTML extraction failed, trying direct extraction...")
