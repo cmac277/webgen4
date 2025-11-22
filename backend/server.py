@@ -230,13 +230,15 @@ async def generate_website(request: GenerateWebsiteRequest):
 @api_router.get("/website/{session_id}/latest", response_model=GeneratedWebsite)
 async def get_latest_website(session_id: str):
     """Get the latest generated website for a session"""
-    website_doc = await db.generated_websites.find_one(
+    websites = await db.generated_websites.find(
         {"session_id": session_id},
         {"_id": 0}
-    ).sort("created_at", -1)
+    ).sort("created_at", -1).limit(1).to_list(1)
     
-    if not website_doc:
+    if not websites:
         raise HTTPException(status_code=404, detail="No website found for this session")
+    
+    website_doc = websites[0]
     
     if isinstance(website_doc['created_at'], str):
         website_doc['created_at'] = datetime.fromisoformat(website_doc['created_at'])
