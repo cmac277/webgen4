@@ -502,65 +502,119 @@ EXAMPLE:
 """
         
         if current_website:
-            # EDITING MODE - Different prompt structure
-            frontend_prompt = f"""🔄 EDIT EXISTING WEBSITE - DO NOT CREATE NEW 🔄
+            # EDITING MODE - Structured, thorough approach
+            frontend_prompt = f"""🔄 WEBSITE EDITING TASK - APPLY ALL REQUESTED CHANGES 🔄
 
 {existing_code_context}
 
-⚠️⚠️⚠️ CRITICAL EDITING RULES ⚠️⚠️⚠️
+═══════════════════════════════════════════════════════════════
+📋 STEP-BY-STEP EDITING PROCESS (FOLLOW EXACTLY)
+═══════════════════════════════════════════════════════════════
 
-THIS IS NOT A NEW WEBSITE REQUEST!
-The user wants to MODIFY the existing website shown above.
+USER'S REQUEST: {prompt}
 
-Even if the user says "create X" or "make Y", they mean:
-- "ADD X to the existing website"
-- "MODIFY the existing website to include Y"
+STEP 1: ANALYZE THE REQUEST
+Break down the user's request into individual changes. List EVERY change requested:
+- What needs to be ADDED?
+- What needs to be CHANGED/MODIFIED?
+- What needs to be REMOVED/FIXED?
+- Where in the code (HTML/CSS/JS/Backend)?
 
-USER'S MODIFICATION REQUEST: {prompt}
+STEP 2: LOCATE EXISTING CODE
+For each change, identify:
+- Which file(s) need modification (HTML, CSS, JS)?
+- Which specific sections/elements/classes?
+- What existing code will be affected?
 
-🎯 YOUR TASK (EDIT, NOT CREATE):
-1. Read and understand the COMPLETE existing code structure above
-2. Figure out what the user wants to add/change/fix
-3. Make ONLY those specific modifications
-4. Keep 100% of the existing code that isn't being changed
-5. Return the COMPLETE modified code (with your edits integrated)
+STEP 3: PLAN THE EDITS
+For each requested change:
+a) Visual changes (colors, layout, styling) → Modify CSS
+b) Content changes (text, structure) → Modify HTML
+c) Behavior changes (interactions, functionality) → Modify JS
+d) API/data changes → Modify backend (if needed)
 
-📋 EDITING EXAMPLES:
+STEP 4: APPLY ALL CHANGES
+Make EVERY change requested. Don't skip any:
+✅ Add all new features mentioned
+✅ Change all elements mentioned
+✅ Fix all issues mentioned
+✅ Modify all styles mentioned
+✅ Update all content mentioned
 
-Example 1:
-- Existing: YouTube clone with video grid
-- User says: "add dark mode"
-- You do: Add dark mode toggle + CSS variables, keep ALL video grid code
-- Result: YouTube clone + dark mode
+STEP 5: PRESERVE EVERYTHING ELSE
+Keep 100% of the existing code that wasn't mentioned:
+✅ Keep all existing HTML structure
+✅ Keep all existing CSS rules not being changed
+✅ Keep all existing JavaScript functions
+✅ Keep all existing content and features
 
-Example 2:
-- Existing: E-commerce site with product cards
-- User says: "create a shopping cart"
-- You do: Add cart icon + cart modal + cart state management, keep ALL product display
-- Result: E-commerce site + shopping cart
+═══════════════════════════════════════════════════════════════
+🎯 CRITICAL REQUIREMENTS
+═══════════════════════════════════════════════════════════════
 
-Example 3:
-- Existing: Portfolio with 3 projects
-- User says: "change background color to blue"
-- You do: Change background color in CSS, keep ALL projects and layout
-- Result: Portfolio with blue background
+1. **BE THOROUGH**: Apply EVERY single change mentioned in the request
+2. **BE SPECIFIC**: If user says "change header to blue", find the header CSS and change it
+3. **BE INTELLIGENT**: Understand what the user means even if not perfectly worded
+4. **BE COMPLETE**: Return the FULL modified code, not just snippets
 
-🚫 ABSOLUTE DON'Ts:
-- Start from scratch
-- Delete existing features
-- Rebuild the entire website
-- Ignore the existing code structure
-- Create something completely different
+═══════════════════════════════════════════════════════════════
+📖 EXAMPLES OF THOROUGH EDITING
+═══════════════════════════════════════════════════════════════
 
-✅ ABSOLUTE DOs:
-- Preserve all existing HTML structure
-- Keep all existing CSS that isn't being modified
-- Maintain all existing JavaScript functionality
-- Add new code alongside existing code
-- Make targeted, precise edits only
+Example 1: "Add dark mode and change font to Arial"
+✅ CORRECT: Add dark mode toggle + dark mode CSS + change font-family to Arial
+❌ WRONG: Only add dark mode, forget the font change
 
-REMEMBER: You are EDITING an existing website, not creating a new one!
-Generate the COMPLETE modified code with your edits integrated:"""
+Example 2: "Make buttons bigger and add a search bar"
+✅ CORRECT: Increase button padding/font size + add search bar HTML/CSS/JS
+❌ WRONG: Only add search bar, forget button changes
+
+Example 3: "Change background to gradient and add animations"
+✅ CORRECT: Change background to gradient + add CSS animations
+❌ WRONG: Only change background, forget animations
+
+Example 4: "Add contact form, change colors to blue theme, make it mobile responsive"
+✅ CORRECT: Add contact form + change all colors to blue + add mobile media queries
+❌ WRONG: Only add contact form, forget colors and responsive
+
+═══════════════════════════════════════════════════════════════
+🔍 INTELLIGENT INTERPRETATION GUIDE
+═══════════════════════════════════════════════════════════════
+
+When user says:
+- "change X" → Find X in CSS and modify it
+- "add Y" → Insert Y HTML/CSS/JS in appropriate location
+- "make it Z" → Modify existing styles/structure to achieve Z
+- "fix the A" → Locate issue with A and correct it
+- "improve B" → Enhance B with better styling/functionality
+- "update C" → Modify existing C with new values/styles
+
+Visual Terms Translation:
+- "bigger/larger" → Increase font-size, padding, width, height
+- "smaller" → Decrease font-size, padding, width, height
+- "darker" → Use darker color values
+- "lighter" → Use lighter color values
+- "centered" → Add text-align: center or flexbox centering
+- "responsive" → Add media queries for mobile
+- "rounded" → Add border-radius
+- "shadow" → Add box-shadow
+- "animated" → Add CSS transitions or animations
+- "modern" → Use gradients, shadows, rounded corners, modern fonts
+
+═══════════════════════════════════════════════════════════════
+⚠️ MANDATORY CHECKLIST BEFORE RESPONDING
+═══════════════════════════════════════════════════════════════
+
+□ Did I read the ENTIRE user request?
+□ Did I identify ALL changes requested (not just the first one)?
+□ Did I apply EVERY change to the code?
+□ Did I preserve ALL existing features not mentioned?
+□ Did I return COMPLETE HTML, CSS, and JavaScript?
+□ Is the code ready to work immediately?
+
+═══════════════════════════════════════════════════════════════
+
+NOW: Generate the COMPLETE modified code with ALL requested changes applied:"""
         else:
             # CREATION MODE - Original prompt structure  
             frontend_prompt = f"""🚀 CREATE A COMPLETELY UNIQUE {analysis.get("app_type", "website").upper()} 🚀
