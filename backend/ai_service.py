@@ -447,47 +447,56 @@ Generate THREE separate code blocks, but remember the HTML will contain EMBEDDED
         )
         chat.with_model(provider, model)
         
-        # Build existing website context if available
+        # Build existing website context if available - SHOW FULL CODE FOR EDITING
         existing_code_context = ""
         if current_website:
-            html_preview = current_website.get('html_content', '')[:3000]
-            css_preview = current_website.get('css_content', '')[:2000]
-            js_preview = current_website.get('js_content', '')[:1500]
+            html_full = current_website.get('html_content', '')
+            css_full = current_website.get('css_content', '')
+            js_full = current_website.get('js_content', '')
             
             existing_code_context = f"""
 ═══════════════════════════════════════════════════════════════
-🔄 ITERATIVE EDITING MODE - EXISTING WEBSITE CODE
+🔄 ITERATIVE EDITING MODE - FULL EXISTING WEBSITE CODE
 ═══════════════════════════════════════════════════════════════
 
 ⚠️ CRITICAL: You are MODIFYING an EXISTING website, NOT creating from scratch!
 
-The user's request is to EDIT/ADD TO this existing website. You MUST:
-1. Keep all existing features that the user doesn't ask to change
-2. Add or modify ONLY what the user specifically requests
-3. Maintain the overall structure and design consistency
-4. Preserve working functionality
+This is the COMPLETE current code. The user wants to make changes to this existing website.
 
-CURRENT HTML (preview - first 3000 chars):
+YOU MUST:
+1. Read and understand the existing code structure
+2. Make ONLY the specific changes the user requests
+3. Keep EVERYTHING else exactly as it is
+4. Don't redesign or rebuild - just EDIT what's requested
+5. Maintain all existing IDs, classes, and functionality
+
+COMPLETE CURRENT HTML:
 ```html
-{html_preview}
-...
+{html_full}
 ```
 
-CURRENT CSS (preview - first 2000 chars):
+COMPLETE CURRENT CSS:
 ```css
-{css_preview}
-...
+{css_full}
 ```
 
-CURRENT JAVASCRIPT (preview - first 1500 chars):
+COMPLETE CURRENT JAVASCRIPT:
 ```javascript
-{js_preview}
-...
+{js_full}
 ```
 
 USER'S MODIFICATION REQUEST: {prompt}
 
-🎯 YOUR TASK: Intelligently modify the existing code to implement the user's request while preserving everything else.
+🎯 YOUR TASK: 
+1. Analyze what the user wants to change/add
+2. Make surgical edits to the existing code
+3. Return the COMPLETE modified code (not just the changes)
+4. Preserve all existing features not mentioned in the request
+
+EXAMPLE:
+- User says "add a dark mode toggle" → Add toggle button + dark mode CSS, keep everything else
+- User says "change header color to blue" → Change header color only, keep all other styles
+- User says "add a contact form" → Insert contact form in appropriate location, keep existing sections
 
 ═══════════════════════════════════════════════════════════════
 """
