@@ -362,6 +362,64 @@ async def get_available_models():
         ]
     }
 
+# ============================================================================
+# PREVIEW ENDPOINTS - Serve generated projects as proper websites
+# ============================================================================
+
+@api_router.get("/preview/{session_id}/")
+@api_router.get("/preview/{session_id}/index.html")
+async def preview_html(session_id: str):
+    """Serve the main HTML file for a project"""
+    project_dir = project_manager.get_project_dir(session_id)
+    html_path = project_dir / "index.html"
+    
+    if not html_path.exists():
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    return FileResponse(html_path, media_type="text/html")
+
+@api_router.get("/preview/{session_id}/static/styles.css")
+async def preview_css(session_id: str):
+    """Serve the CSS file for a project"""
+    project_dir = project_manager.get_project_dir(session_id)
+    css_path = project_dir / "static" / "styles.css"
+    
+    if not css_path.exists():
+        raise HTTPException(status_code=404, detail="CSS file not found")
+    
+    return FileResponse(css_path, media_type="text/css")
+
+@api_router.get("/preview/{session_id}/static/app.js")
+async def preview_js(session_id: str):
+    """Serve the JavaScript file for a project"""
+    project_dir = project_manager.get_project_dir(session_id)
+    js_path = project_dir / "static" / "app.js"
+    
+    if not js_path.exists():
+        raise HTTPException(status_code=404, detail="JavaScript file not found")
+    
+    return FileResponse(js_path, media_type="application/javascript")
+
+@api_router.post("/preview/{session_id}/backend/start")
+async def start_project_backend(session_id: str):
+    """Start the generated backend server for a project"""
+    result = project_manager.start_backend(session_id)
+    
+    if not result["success"]:
+        raise HTTPException(status_code=500, detail=result["message"])
+    
+    return result
+
+@api_router.post("/preview/{session_id}/backend/stop")
+async def stop_project_backend(session_id: str):
+    """Stop the generated backend server for a project"""
+    result = project_manager.stop_backend(session_id)
+    
+    if not result["success"]:
+        raise HTTPException(status_code=404, detail=result["message"])
+    
+    return result
+
 # Include router
 app.include_router(api_router)
 
