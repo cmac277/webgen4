@@ -70,20 +70,37 @@ class ProjectManager:
         # Modify HTML to link external CSS and JS files, and extract embedded content
         html_content_linked, final_css, final_js = self._link_external_files(html_content, css_content, js_content)
         
+        # CRITICAL VALIDATION: Prevent blank websites
+        html_size = len(html_content_linked)
+        css_size = len(final_css)
+        js_size = len(final_js)
+        
+        logger.info(f"📊 Content sizes - HTML: {html_size}, CSS: {css_size}, JS: {js_size}")
+        
+        if html_size < 500:
+            logger.error(f"❌ CRITICAL: HTML too small ({html_size} chars) - likely blank/invalid website!")
+        
+        if css_size < 100:
+            logger.error(f"❌ CRITICAL: CSS too small ({css_size} chars) - website will appear blank/unstyled!")
+            logger.error(f"This will result in a blank white/black screen for users!")
+        
         # Save HTML (root level for easy serving)
         html_path = project_dir / "index.html"
         html_path.write_text(html_content_linked, encoding='utf-8')
-        logger.info(f"Saved index.html: {html_path} ({len(html_content_linked)} chars)")
+        logger.info(f"✅ Saved index.html: {html_path} ({len(html_content_linked)} chars)")
         
         # Save CSS (use extracted content if available)
         css_path = static_dir / "styles.css"
         css_path.write_text(final_css, encoding='utf-8')
-        logger.info(f"Saved styles.css: {css_path} ({len(final_css)} chars)")
+        if css_size > 100:
+            logger.info(f"✅ Saved styles.css: {css_path} ({len(final_css)} chars)")
+        else:
+            logger.error(f"⚠️ Saved styles.css: {css_path} ({len(final_css)} chars) - TOO SMALL!")
         
         # Save JS (use extracted content if available)
         js_path = static_dir / "app.js"
         js_path.write_text(final_js, encoding='utf-8')
-        logger.info(f"Saved app.js: {js_path} ({len(final_js)} chars)")
+        logger.info(f"✅ Saved app.js: {js_path} ({len(final_js)} chars)")
         
         # Save backend files if provided
         if python_backend:
