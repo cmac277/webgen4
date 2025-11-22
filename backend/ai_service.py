@@ -48,31 +48,22 @@ Your role is to discuss and plan websites, not to dump code in chat."""
         # If there's existing website code, add it to context
         context_info = ""
         if current_website:
+            html_len = len(current_website.get('html_content', ''))
+            css_len = len(current_website.get('css_content', ''))
+            js_len = len(current_website.get('js_content', ''))
+            backend_len = len(current_website.get('python_backend', ''))
+            
             context_info = f"""
 
-📋 CURRENT PROJECT CODE (Available for modifications):
+📋 CURRENT PROJECT STATUS:
 
-**HTML ({len(current_website.get('html_content', ''))} characters):**
-```html
-{current_website.get('html_content', '')[:2000]}...
-```
+You have an existing website project with:
+- HTML: {html_len} characters
+- CSS: {css_len} characters  
+- JavaScript: {js_len} characters
+- Backend: {backend_len} characters
 
-**CSS ({len(current_website.get('css_content', ''))} characters):**
-```css
-{current_website.get('css_content', '')[:1000]}...
-```
-
-**JavaScript ({len(current_website.get('js_content', ''))} characters):**
-```javascript
-{current_website.get('js_content', '')[:1000]}...
-```
-
-**Backend ({len(current_website.get('python_backend', ''))} characters):**
-```python
-{current_website.get('python_backend', '')[:1000]}...
-```
-
-When the user asks to modify, update, or change the website, you can see the current code above. Make specific changes based on their requests."""
+When users ask to modify the website, acknowledge their request and explain what will be implemented. DO NOT show code. The actual implementation will happen automatically."""
         
         try:
             chat = LlmChat(
