@@ -116,48 +116,63 @@ class ProjectManager:
     
     def _link_external_files(self, html: str, css: str, js: str) -> str:
         """Modify HTML to link external CSS and JS files properly"""
+        import re
         
         # Check if HTML already has embedded styles
         has_embedded_css = "<style>" in html
         has_embedded_js = "<script>" in html and "</script>" in html
         
-        # If content is embedded, extract and replace with links
-        if has_embedded_css:
-            # Remove embedded styles
-            import re
+        # Extract embedded CSS if present and css parameter is empty
+        extracted_css = css
+        if has_embedded_css and not css.strip():
+            # Extract all CSS from style tags
+            style_matches = re.findall(r'<style>(.*?)</style>', html, re.DOTALL)
+            if style_matches:
+                extracted_css = '\n\n'.join(style_matches)
+                logger.info(f"Extracted {len(extracted_css)} chars of CSS from embedded styles")
+        
+        # Extract embedded JS if present and js parameter is empty
+        extracted_js = js
+        if has_embedded_js and not js.strip():
+            # Extract all JS from script tags (excluding those with src attribute)
+            script_matches = re.findall(r'<script(?![^>]*src=)>(.*?)</script>', html, re.DOTALL)
+            if script_matches:
+                extracted_js = '\n\n'.join(script_matches)
+                logger.info(f"Extracted {len(extracted_js)} chars of JS from embedded scripts")
+        
+        # Only modify HTML and link external files if we have content to link
+        if extracted_css.strip():
+            # Remove embedded styles now that we've extracted them
             html = re.sub(r'<style>.*?</style>', '', html, flags=re.DOTALL)
+            
+            # Add CSS link if not already present
+            if '<link rel="stylesheet" href="static/styles.css">' not in html:
+                if "</head>" in html:
+                    html = html.replace(
+                        "</head>",
+                        '    <link rel="stylesheet" href="static/styles.css">\n</head>'
+                    )
+                else:
+                    html = html.replace(
+                        "<head>",
+                        '<head>\n    <link rel="stylesheet" href="static/styles.css">'
+                    )
         
-        if has_embedded_js:
-            # Remove embedded scripts (but keep CDN scripts)
-            import re
-            # Only remove scripts that don't have src attribute
-            html = re.sub(r'<script>(?!.*src=).*?</script>', '', html, flags=re.DOTALL)
+        if extracted_js.strip():
+            # Remove embedded scripts (but keep CDN scripts with src attribute)
+            html = re.sub(r'<script(?![^>]*src=)>.*?</script>', '', html, flags=re.DOTALL)
+            
+            # Add JS script if not already present
+            if '<script src="static/app.js"></script>' not in html:
+                if "</body>" in html:
+                    html = html.replace(
+                        "</body>",
+                        '    <script src="static/app.js"></script>\n</body>'
+                    )
+                else:
+                    html += '\n<script src="static/app.js"></script>'
         
-        # Add CSS link if not already present
-        if '<link rel="stylesheet" href="static/styles.css">' not in html:
-            if "</head>" in html:
-                html = html.replace(
-                    "</head>",
-                    '    <link rel="stylesheet" href="static/styles.css">\n</head>'
-                )
-            else:
-                # Add head section if missing
-                html = html.replace(
-                    "<head>",
-                    '<head>\n    <link rel="stylesheet" href="static/styles.css">'
-                )
-        
-        # Add JS script if not already present
-        if '<script src="static/app.js"></script>' not in html:
-            if "</body>" in html:
-                html = html.replace(
-                    "</body>",
-                    '    <script src="static/app.js"></script>\n</body>'
-                )
-            else:
-                html += '\n<script src="static/app.js"></script>'
-        
-        return html
+        return html, extracted_css, extracted_js
     
     def get_project_files(self, session_id: str) -> Optional[Dict[str, str]]:
         """Get all project file paths"""
