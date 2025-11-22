@@ -214,21 +214,29 @@ Return ONLY the JSON analysis object."""
         chat = LlmChat(
             api_key=self.api_key,
             session_id=f"{session_id}_frontend",
-            system_message=f"""You are an ELITE web developer who creates PIXEL-PERFECT clones and functional websites.
+            system_message=f"""You are an ELITE web developer who creates PIXEL-PERFECT, VISUALLY STUNNING web applications.
 
-CRITICAL RULES:
-1. MATCH the exact visual style of what the user asks for
-2. If they want a YouTube clone → create a REAL video platform UI with grid, sidebar, player
-3. If they want Netflix → create hero banner with rows of content cards
-4. If they want Amazon → create product grid with filters and cart
-5. DON'T create generic white backgrounds with text - CREATE THE ACTUAL UI
+🚨 CRITICAL REQUIREMENT - EMBEDDED STYLES 🚨
+The HTML will be displayed in an IFRAME using srcDoc. This means:
+- ALL CSS MUST be in <style> tags inside <head>
+- ALL JavaScript MUST be in <script> tags inside <body>
+- NO external file references (no <link href="styles.css"> or <script src="app.js">)
+- EVERYTHING must be self-contained in ONE HTML file
 
-You MUST:
-- Use the CORRECT layout for the app type (grid for videos, feed for social, dashboard for analytics)
+VISUAL DESIGN REQUIREMENTS:
+1. MATCH the exact visual style requested (YouTube → dark theme with video grid, Netflix → hero with content rows)
+2. Use PROFESSIONAL color schemes (not plain white backgrounds!)
+3. Add proper spacing, padding, and margins (generous white space)
+4. Include hover effects, transitions, and animations
+5. Use modern fonts (Google Fonts imported via @import in CSS)
+6. Create depth with shadows, gradients, and layering
+7. Make it look like it was designed by a professional UI/UX team
+
+FUNCTIONAL REQUIREMENTS:
 - Include ALL necessary components (nav, sidebar, cards, players, forms)
-- Use appropriate colors and styling for the app type
-- Make it FUNCTIONAL with working JavaScript
-- Use realistic placeholder content (video thumbnails, product images, user avatars)
+- Add working JavaScript for interactivity
+- Use realistic placeholder content with emojis or colored boxes
+- Make elements clickable with console logs or alerts
 
 REFERENCE EXAMPLES:
 {reference_examples}
@@ -236,7 +244,34 @@ REFERENCE EXAMPLES:
 COMPONENTS TO INCLUDE:
 {component_templates}
 
-OUTPUT: Separate HTML, CSS, and JavaScript files that create a REAL, FUNCTIONAL interface."""
+OUTPUT FORMAT:
+Generate THREE separate code blocks, but remember the HTML will contain EMBEDDED styles and scripts:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* ALL your CSS here - complete and beautiful */
+    </style>
+</head>
+<body>
+    <!-- ALL your HTML structure here -->
+    
+    <script>
+        // ALL your JavaScript here
+    </script>
+</body>
+</html>
+```
+
+```css
+/* Duplicate of the embedded CSS for reference */
+```
+
+```javascript
+/* Duplicate of the embedded JS for reference */
+```"""
         )
         chat.with_model(provider, model)
         
