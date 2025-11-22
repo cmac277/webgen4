@@ -120,6 +120,10 @@ backend:
     stuck_count: 0
     priority: "high"
     needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "BLANK SCREEN PREVENTION - Critical validation added. Changes: 1) Enhanced _link_external_files to ALWAYS extract embedded CSS/JS from HTML, 2) Added intelligent extraction that uses embedded content even if CSS/JS params have values, 3) Added content size validation before saving (HTML>500, CSS>100), 4) Added critical warnings in logs when content is too small, 5) Added final validation in ai_service before returning (checks DOCTYPE, body content, styling), 6) Forces fallback only if validation fails to prevent blank screens. System now ensures CSS is extracted from embedded styles and validates content quality."
   
   - task: "Iterative Editing Support"
     implemented: true
