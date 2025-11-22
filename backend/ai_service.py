@@ -505,48 +505,505 @@ body {
             return self._create_generic_fallback(prompt)
 
     def _create_video_platform_fallback(self, prompt: str) -> Dict[str, str]:
-        """Create a video platform UI fallback"""
+        """Create a video platform UI fallback with EMBEDDED styles"""
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Platform</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>VideoTube</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
+        body {{
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0f0f0f;
+            color: #f1f1f1;
+            overflow-x: hidden;
+        }}
+        
+        /* Header */
+        .header {{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: #0f0f0f;
+            border-bottom: 1px solid #303030;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 100;
+        }}
+        
+        .header-left {{
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }}
+        
+        .menu-btn {{
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }}
+        
+        .menu-btn:hover {{
+            background: rgba(255,255,255,0.1);
+        }}
+        
+        .logo {{
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
+        }}
+        
+        .logo-icon {{
+            font-size: 28px;
+        }}
+        
+        .header-center {{
+            flex: 1;
+            max-width: 640px;
+            display: flex;
+            margin: 0 40px;
+        }}
+        
+        .search-container {{
+            flex: 1;
+            display: flex;
+            border: 1px solid #303030;
+            border-radius: 40px;
+            overflow: hidden;
+            background: #121212;
+        }}
+        
+        .search-bar {{
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 16px;
+            color: #f1f1f1;
+            font-size: 16px;
+            outline: none;
+        }}
+        
+        .search-btn {{
+            background: #222;
+            border: none;
+            border-left: 1px solid #303030;
+            padding: 0 20px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.2s;
+        }}
+        
+        .search-btn:hover {{
+            background: #333;
+        }}
+        
+        .header-right {{
+            display: flex;
+            gap: 8px;
+        }}
+        
+        .header-btn {{
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }}
+        
+        .header-btn:hover {{
+            background: rgba(255,255,255,0.1);
+        }}
+        
+        /* Sidebar */
+        .sidebar {{
+            position: fixed;
+            left: 0;
+            top: 56px;
+            width: 240px;
+            height: calc(100vh - 56px);
+            background: #0f0f0f;
+            overflow-y: auto;
+            padding: 12px 0;
+            border-right: 1px solid #303030;
+        }}
+        
+        .sidebar::-webkit-scrollbar {{
+            width: 8px;
+        }}
+        
+        .sidebar::-webkit-scrollbar-thumb {{
+            background: #303030;
+            border-radius: 4px;
+        }}
+        
+        .nav-item {{
+            display: flex;
+            align-items: center;
+            padding: 10px 24px;
+            color: #f1f1f1;
+            text-decoration: none;
+            transition: background 0.2s;
+            gap: 24px;
+            font-size: 14px;
+        }}
+        
+        .nav-item:hover {{
+            background: #272727;
+        }}
+        
+        .nav-item.active {{
+            background: #272727;
+            font-weight: 500;
+        }}
+        
+        .nav-separator {{
+            height: 1px;
+            background: #303030;
+            margin: 12px 0;
+        }}
+        
+        .nav-section-title {{
+            padding: 8px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+        
+        /* Main Content */
+        .main-content {{
+            margin-left: 240px;
+            margin-top: 56px;
+            padding: 24px;
+            min-height: calc(100vh - 56px);
+        }}
+        
+        /* Chips/Filters */
+        .chips-container {{
+            display: flex;
+            gap: 12px;
+            padding-bottom: 24px;
+            overflow-x: auto;
+        }}
+        
+        .chips-container::-webkit-scrollbar {{
+            height: 0;
+        }}
+        
+        .chip {{
+            padding: 8px 16px;
+            background: #272727;
+            border: 1px solid #303030;
+            border-radius: 8px;
+            color: #f1f1f1;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+        }}
+        
+        .chip:hover {{
+            background: #3f3f3f;
+        }}
+        
+        .chip.active {{
+            background: #f1f1f1;
+            color: #0f0f0f;
+            font-weight: 500;
+        }}
+        
+        /* Video Grid */
+        .video-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 40px 16px;
+        }}
+        
+        .video-card {{
+            cursor: pointer;
+        }}
+        
+        .video-thumbnail {{
+            position: relative;
+            width: 100%;;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            transition: transform 0.2s;
+        }}
+        
+        .video-card:hover .video-thumbnail {{
+            transform: scale(1.02);
+        }}
+        
+        .duration {{
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }}
+        
+        .video-info {{
+            display: flex;
+            gap: 12px;
+            padding-top: 12px;
+        }}
+        
+        .channel-avatar {{
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }}
+        
+        .video-details {{
+            flex: 1;
+        }}
+        
+        .video-title {{
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 4px;
+            color: #f1f1f1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }}
+        
+        .video-meta {{
+            font-size: 12px;
+            color: #aaa;
+            line-height: 1.6;
+        }}
+        
+        .channel-name {{
+            color: #aaa;
+            transition: color 0.2s;
+        }}
+        
+        .channel-name:hover {{
+            color: #fff;
+        }}
+        
+        /* Responsive */
+        @media (max-width: 1024px) {{
+            .video-grid {{
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }}
+        }}
+        
+        @media (max-width: 768px) {{
+            .sidebar {{
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }}
+            
+            .sidebar.open {{
+                transform: translateX(0);
+            }}
+            
+            .main-content {{
+                margin-left: 0;
+            }}
+            
+            .video-grid {{
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }}
+        }}
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="header-left">
-            <button class="menu-btn">☰</button>
-            <div class="logo">📺 VideoTube</div>
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+            <div class="logo">
+                <span class="logo-icon">📺</span>
+                VideoTube
+            </div>
         </div>
         <div class="header-center">
-            <input type="text" class="search-bar" placeholder="Search">
-            <button class="search-btn">🔍</button>
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search" id="searchInput">
+                <button class="search-btn" onclick="handleSearch()">🔍</button>
+            </div>
         </div>
         <div class="header-right">
-            <button>🔔</button>
-            <button>👤</button>
+            <button class="header-btn">➕</button>
+            <button class="header-btn">🔔</button>
+            <button class="header-btn">👤</button>
         </div>
     </header>
     
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
         <nav>
             <a href="#" class="nav-item active">🏠 Home</a>
+            <a href="#" class="nav-item">🎬 Shorts</a>
             <a href="#" class="nav-item">📺 Subscriptions</a>
+        </nav>
+        <div class="nav-separator"></div>
+        <nav>
             <a href="#" class="nav-item">📚 Library</a>
             <a href="#" class="nav-item">🕐 History</a>
-            <a href="#" class="nav-item">👍 Liked Videos</a>
+            <a href="#" class="nav-item">📹 Your videos</a>
+            <a href="#" class="nav-item">⏰ Watch later</a>
+            <a href="#" class="nav-item">👍 Liked videos</a>
+        </nav>
+        <div class="nav-separator"></div>
+        <div class="nav-section-title">Subscriptions</div>
+        <nav>
+            <a href="#" class="nav-item">🎨 TechReviews</a>
+            <a href="#" class="nav-item">🎮 CodeWithMe</a>
+            <a href="#" class="nav-item">🎵 MusicVibes</a>
+            <a href="#" class="nav-item">🎯 GameZone</a>
+        </nav>
+        <div class="nav-separator"></div>
+        <div class="nav-section-title">Explore</div>
+        <nav>
+            <a href="#" class="nav-item">🔥 Trending</a>
+            <a href="#" class="nav-item">🛍️ Shopping</a>
+            <a href="#" class="nav-item">🎵 Music</a>
+            <a href="#" class="nav-item">🎬 Movies</a>
+            <a href="#" class="nav-item">📡 Live</a>
+            <a href="#" class="nav-item">🎮 Gaming</a>
+            <a href="#" class="nav-item">⚽ Sports</a>
         </nav>
     </aside>
     
     <main class="main-content">
-        <div class="video-grid" id="videoGrid">
-            <!-- Videos will be generated by JavaScript -->
+        <div class="chips-container">
+            <div class="chip active">All</div>
+            <div class="chip">Music</div>
+            <div class="chip">Gaming</div>
+            <div class="chip">News</div>
+            <div class="chip">Live</div>
+            <div class="chip">Sports</div>
+            <div class="chip">Learning</div>
+            <div class="chip">Fashion</div>
+            <div class="chip">Podcasts</div>
         </div>
+        
+        <div class="video-grid" id="videoGrid"></div>
     </main>
     
-    <script src="app.js"></script>
+    <script>
+        const videos = [
+            {{ title: 'Master JavaScript in 30 Minutes', channel: 'CodeMaster', views: '1.2M', time: '2 days ago', duration: '30:45', emoji: '💻' }},
+            {{ title: 'Top 10 Web Design Trends 2024', channel: 'DesignPro', views: '856K', time: '1 week ago', duration: '15:22', emoji: '🎨' }},
+            {{ title: 'Build a Full Stack App Tutorial', channel: 'DevGuru', views: '2.1M', time: '3 days ago', duration: '1:25:30', emoji: '🚀' }},
+            {{ title: 'React Hooks Deep Dive', channel: 'CodeMaster', views: '1.8M', time: '5 days ago', duration: '22:10', emoji: '⚛️' }},
+            {{ title: 'CSS Grid vs Flexbox Explained', channel: 'DesignPro', views: '943K', time: '1 week ago', duration: '18:33', emoji: '🎯' }},
+            {{ title: 'Python Django for Beginners', channel: 'PythonPro', views: '1.5M', time: '2 weeks ago', duration: '45:12', emoji: '🐍' }},
+            {{ title: 'AI and Machine Learning Basics', channel: 'AIAcademy', views: '2.8M', time: '4 days ago', duration: '38:45', emoji: '🤖' }},
+            {{ title: 'Database Design Best Practices', channel: 'DataExpert', views: '678K', time: '1 week ago', duration: '28:17', emoji: '🗄️' }},
+            {{ title: 'Modern UI/UX Design Principles', channel: 'DesignPro', views: '1.4M', time: '3 days ago', duration: '20:55', emoji: '✨' }},
+            {{ title: 'Docker & Kubernetes Tutorial', channel: 'DevOps101', views: '1.1M', time: '5 days ago', duration: '52:30', emoji: '🐳' }},
+            {{ title: 'GraphQL vs REST API', channel: 'DevGuru', views: '789K', time: '2 days ago', duration: '25:40', emoji: '📡' }},
+            {{ title: 'TypeScript Complete Guide', channel: 'CodeMaster', views: '1.3M', time: '1 week ago', duration: '1:10:22', emoji: '📘' }}
+        ];
+        
+        function createVideoCard(video) {{
+            return `
+                <div class="video-card" onclick="playVideo('${{video.title}}')">
+                    <div class="video-thumbnail">
+                        ${{video.emoji}}
+                        <span class="duration">${{video.duration}}</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="channel-avatar">${{video.emoji}}</div>
+                        <div class="video-details">
+                            <div class="video-title">${{video.title}}</div>
+                            <div class="video-meta">
+                                <div class="channel-name">${{video.channel}}</div>
+                                <div>${{video.views}} views • ${{video.time}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }}
+        
+        function renderVideos() {{
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = videos.map(video => createVideoCard(video)).join('');
+        }}
+        
+        function toggleSidebar() {{
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }}
+        
+        function handleSearch() {{
+            const query = document.getElementById('searchInput').value;
+            if (query) {{
+                alert('Searching for: ' + query);
+            }}
+        }}
+        
+        function playVideo(title) {{
+            alert('Playing: ' + title);
+        }}
+        
+        // Chip interaction
+        document.addEventListener('DOMContentLoaded', () => {{
+            renderVideos();
+            
+            const chips = document.querySelectorAll('.chip');
+            chips.forEach(chip => {{
+                chip.addEventListener('click', () => {{
+                    chips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                }});
+            }});
+            
+            // Search on Enter
+            document.getElementById('searchInput').addEventListener('keypress', (e) => {{
+                if (e.key === 'Enter') handleSearch();
+            }});
+        }});
+    </script>
 </body>
 </html>"""
 
