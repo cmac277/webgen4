@@ -1,5 +1,7 @@
 from fastapi import FastAPI, APIRouter, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict, Any
@@ -14,6 +16,7 @@ import base64
 # Import services
 from s3_service import S3Service
 from ai_service import AIService
+from project_manager import ProjectManager
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
