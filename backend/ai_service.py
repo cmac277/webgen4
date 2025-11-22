@@ -1569,6 +1569,118 @@ Format:
     def _generate_package_json(self, prompt: str) -> str:
         return json.dumps({"name": "generated-app", "version": "1.0.0"}, indent=2)
 
+    def _format_frameworks_knowledge(self) -> str:
+        """Format comprehensive framework knowledge for AI"""
+        output = ["═══════════════════════════════════════════════════════════════"]
+        output.append("📚 COMPREHENSIVE FRAMEWORK & LIBRARY ACCESS")
+        output.append("═══════════════════════════════════════════════════════════════\n")
+        
+        # Animation Libraries
+        output.append("**ANIMATION LIBRARIES:**")
+        for name, info in FRAMEWORKS['animation_libraries'].items():
+            output.append(f"- {name.upper()}: {info['cdn'][0] if isinstance(info['cdn'], list) else info['cdn']}")
+            output.append(f"  Usage: {info['usage']}")
+        
+        output.append("\n**3D & GRAPHICS:**")
+        for name, info in FRAMEWORKS['3d_graphics'].items():
+            output.append(f"- {name.upper()}: {info['cdn'][0]}")
+            output.append(f"  Usage: {info['usage']}")
+        
+        output.append("\n**CHARTS & DATA VIZ:**")
+        for name, info in FRAMEWORKS['charts_data_viz'].items():
+            output.append(f"- {name.upper()}: {info['cdn'][0]}")
+            output.append(f"  When: {info['when']}")
+        
+        output.append("\n**INTERACTIONS:**")
+        for name, info in FRAMEWORKS['interaction_libraries'].items():
+            output.append(f"- {name.upper()}: {', '.join(info['cdn']) if isinstance(info['cdn'], list) else info['cdn']}")
+            output.append(f"  Usage: {info['usage']}")
+        
+        output.append("\n**FORMS & VALIDATION:**")
+        for name, info in FRAMEWORKS['forms_validation'].items():
+            output.append(f"- {name.upper()}: {info['cdn'][0]}")
+        
+        output.append("\n**NOTIFICATIONS:**")
+        for name, info in FRAMEWORKS['notifications_modals'].items():
+            output.append(f"- {name.upper()}: {info['cdn'][0]}")
+            output.append(f"  Usage: {info['usage']}")
+        
+        return "\n".join(output)
+
+    def _format_design_knowledge(self) -> str:
+        """Format design principles and best practices"""
+        output = ["\n═══════════════════════════════════════════════════════════════"]
+        output.append("🎨 DESIGN KNOWLEDGE BASE")
+        output.append("═══════════════════════════════════════════════════════════════\n")
+        
+        # Color Theory
+        output.append("**COLOR THEORY:**")
+        output.append("Popular Palettes:")
+        for style, colors in DESIGN_PRINCIPLES['color_theory']['popular_palettes'].items():
+            output.append(f"- {style.title()}: {', '.join(colors)}")
+        
+        output.append("\nColor Best Practices:")
+        for practice in DESIGN_PRINCIPLES['color_theory']['best_practices']:
+            output.append(f"• {practice}")
+        
+        # Typography
+        output.append("\n**TYPOGRAPHY:**")
+        output.append("Font Pairings:")
+        for style, pairing in DESIGN_PRINCIPLES['typography']['font_pairings'].items():
+            output.append(f"- {style.title()}: {pairing}")
+        
+        output.append("\nTypography Best Practices:")
+        for practice in DESIGN_PRINCIPLES['typography']['best_practices']:
+            output.append(f"• {practice}")
+        
+        # Spacing
+        output.append("\n**SPACING & LAYOUT:**")
+        output.append("Spacing Scale:")
+        for size, value in DESIGN_PRINCIPLES['spacing_layout']['spacing_scale'].items():
+            output.append(f"- {size}: {value}")
+        
+        output.append("\nLayout Best Practices:")
+        for practice in DESIGN_PRINCIPLES['spacing_layout']['best_practices']:
+            output.append(f"• {practice}")
+        
+        return "\n".join(output)
+
+    def _format_component_patterns(self) -> str:
+        """Format component design patterns"""
+        output = ["\n═══════════════════════════════════════════════════════════════"]
+        output.append("🧩 COMPONENT DESIGN PATTERNS")
+        output.append("═══════════════════════════════════════════════════════════════\n")
+        
+        # Buttons
+        output.append("**BUTTON PATTERNS:**")
+        output.append("Primary Button CSS:")
+        output.append(COMPONENT_PATTERNS['buttons']['primary_button']['css'])
+        
+        # Cards
+        output.append("\n**CARD PATTERNS:**")
+        output.append("Elevated Card CSS:")
+        output.append(COMPONENT_PATTERNS['cards']['elevated_card']['css'])
+        
+        output.append("\nGlass Morphism Card CSS:")
+        output.append(COMPONENT_PATTERNS['cards']['glass_card']['css'])
+        
+        # Forms
+        output.append("\n**FORM PATTERNS:**")
+        output.append("Modern Input CSS:")
+        output.append(COMPONENT_PATTERNS['forms']['modern_input']['css'])
+        
+        # Website Patterns
+        output.append("\n**WEBSITE TYPE PATTERNS:**")
+        for web_type, info in WEBSITE_PATTERNS.items():
+            output.append(f"\n{web_type.upper().replace('_', ' ')}:")
+            output.append(f"Structure: {' → '.join(info['structure'])}")
+            output.append(f"Color Scheme: {info['color_scheme']}")
+            output.append("Design Tips:")
+            for tip in info['design_tips']:
+                output.append(f"• {tip}")
+        
+        return "\n".join(output)
+
     async def _generate_fallback_project(self, prompt: str) -> Dict[str, Any]:
         """Complete fallback"""
         fallback = self._create_video_platform_fallback(prompt)
