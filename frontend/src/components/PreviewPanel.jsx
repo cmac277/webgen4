@@ -48,6 +48,14 @@ export default function PreviewPanel({ website }) {
               <TabsTrigger value="js" className="data-[state=active]:bg-purple-600" data-testid="js-tab">
                 JavaScript
               </TabsTrigger>
+              <TabsTrigger value="backend" className="data-[state=active]:bg-purple-600" data-testid="backend-tab">
+                Backend
+              </TabsTrigger>
+              {website?.files && website.files.length > 0 && (
+                <TabsTrigger value="files" className="data-[state=active]:bg-purple-600" data-testid="files-tab">
+                  All Files ({website.files.length})
+                </TabsTrigger>
+              )}
             </TabsList>
 
             <div className="flex items-center space-x-2">
