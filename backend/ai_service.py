@@ -216,27 +216,29 @@ Analyze if the user is asking to:
 - CHANGE the design/styling
 - FIX or improve something"""
         
-        chat = LlmChat(
-            api_key=self.api_key,
-            session_id=f"{session_id}_analyzer",
-            system_message=f"""You are an expert at understanding user intent for web applications.
+        system_msg = """You are an expert at understanding user intent for web applications.
 
 Analyze the user's request and identify:
 1. What TYPE of website/app they want (e.g., video platform, e-commerce, social media, dashboard, etc.)
 2. What SPECIFIC FEATURES they need (e.g., video grid, shopping cart, user profiles, data visualization)
 3. What VISUAL STYLE is appropriate (e.g., YouTube's dark theme with thumbnails, Amazon's product grid, Netflix's hero banner)
 4. What COMPONENTS are needed (e.g., navigation bar, sidebar, video player, cards, forms)
-{context_info}
+""" + context_info + """
 
 Return ONLY a JSON object with this structure:
 {
-  "app_type": "video_platform" | "ecommerce" | "social_media" | "dashboard" | "landing_page" | "other",
-  "reference_site": "youtube" | "netflix" | "amazon" | "twitter" | "stripe" | "custom",
+  "app_type": "video_platform OR ecommerce OR social_media OR dashboard OR landing_page OR other",
+  "reference_site": "youtube OR netflix OR amazon OR twitter OR stripe OR custom",
   "key_components": ["video_grid", "sidebar_nav", "search_bar", "video_player"],
-  "visual_style": "dark_theme" | "light_theme" | "gradient" | "minimal" | "colorful",
-  "layout_pattern": "grid" | "feed" | "hero_sections" | "dashboard_cards" | "single_page",
+  "visual_style": "dark_theme OR light_theme OR gradient OR minimal OR colorful",
+  "layout_pattern": "grid OR feed OR hero_sections OR dashboard_cards OR single_page",
   "primary_features": ["video_playback", "comments", "recommendations", "subscriptions"]
 }"""
+        
+        chat = LlmChat(
+            api_key=self.api_key,
+            session_id=f"{session_id}_analyzer",
+            system_message=system_msg
         )
         chat.with_model(provider, model)
         
