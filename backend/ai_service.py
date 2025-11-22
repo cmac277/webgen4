@@ -270,13 +270,14 @@ Return ONLY the JSON analysis object."""
                 "primary_features": ["responsive_design"]
             }
 
-    async def _generate_contextual_frontend(self, prompt: str, analysis: Dict, provider: str, model: str, session_id: str) -> Dict[str, str]:
-        """Generate frontend based on context analysis - ALWAYS generates unique code"""
+    async def _generate_contextual_frontend(self, prompt: str, analysis: Dict, provider: str, model: str, session_id: str, current_website: Optional[Dict] = None) -> Dict[str, str]:
+        """Generate frontend based on context analysis - Supports iterative editing"""
         
         logger.info("=" * 80)
         logger.info(f"FRONTEND GENERATION START")
         logger.info(f"User Prompt: {prompt}")
         logger.info(f"Analysis: {analysis}")
+        logger.info(f"Has existing website: {current_website is not None}")
         logger.info("=" * 80)
         
         # Build context-specific instructions
