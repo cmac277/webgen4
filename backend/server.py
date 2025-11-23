@@ -48,6 +48,11 @@ netlify_generator = NetlifyGenerator(
     api_key=os.getenv('EMERGENT_LLM_KEY')
 )
 
+# Initialize Netlify deployment service
+netlify_deploy_service = NetlifyDeployService(
+    api_token=os.getenv('NETLIFY_API_TOKEN')
+)
+
 # Create the main app
 app = FastAPI(title="Code Weaver API")
 api_router = APIRouter(prefix="/api")
