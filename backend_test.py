@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend Test Suite for Advanced Iterative Editing System
-Tests the comprehensive editing capabilities as requested in review
+Backend Test Suite for Netlify Generation and Deployment Flow
+Tests the complete Netlify auto-deployment functionality as requested in review
 """
 
 import asyncio
@@ -17,7 +17,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class AdvancedEditingTester:
+class NetlifyDeploymentTester:
     def __init__(self):
         # Get backend URL from frontend .env
         self.base_url = self._get_backend_url()
