@@ -1033,37 +1033,57 @@ Respond with JSON:
                 filename = match.group(1)
                 content_start = match.end()
                 
-                # Find where this file's content ends
-                # It ends at the next file declaration or at a closing brace
-                if i < len(matches) - 1:
-                    content_end = matches[i + 1].start()
-                else:
-                    # Last file - find the closing of the files object
-                    # Look for }, or }\n}
-                    closing_pattern = r',?\s*\}[\s\n]*\}?'
-                    closing_match = re.search(closing_pattern, response[content_start:])
-                    if closing_match:
-                        content_end = content_start + closing_match.start()
+                # Check if content is in quotes
+                if response[content_start:content_start+1] == '"':
+                    # Content is properly quoted - find the closing quote
+                    content_start += 1  # Skip opening quote
+                    
+                    # Find the closing quote (handling escaped quotes)
+                    closing_pos = self._find_closing_quote(response, content_start)
+                    
+                    if closing_pos > content_start:
+                        raw_content = response[content_start:closing_pos]
+                        
+                        # Unescape the content
+                        raw_content = raw_content.replace('\\n', '\n')
+                        raw_content = raw_content.replace('\\"', '"')
+                        raw_content = raw_content.replace('\\\\', '\\')
+                        raw_content = raw_content.replace('\\/', '/')
+                        
+                        if len(raw_content) > 50:
+                            files[filename] = raw_content
+                            logger.info(f"✅ Extracted {filename} ({len(raw_content)} chars) via raw extraction")
                     else:
+                        logger.warning(f"Could not find closing quote for {filename}")
+                else:
+                    # Content is NOT quoted - try to find the end
+                    if i < len(matches) - 1:
+                        content_end = matches[i + 1].start()
+                    else:
+                        # Last file - try to find reasonable endpoint
+                        # Look for the end of the files object
+                        remaining = response[content_start:]
+                        
+                        # Try multiple patterns for finding the end
+                        end_patterns = [
+                            r'"\s*,\s*"deploy_config"',  # Next key
+                            r'"\s*\}',  # End of files object
+                            r'\}\s*,\s*"deploy_config"',  # End with deploy_config
+                        ]
+                        
                         content_end = len(response)
-                
-                # Extract the content
-                raw_content = response[content_start:content_end].strip()
-                
-                # Remove trailing commas and quotes
-                raw_content = raw_content.rstrip(',').strip()
-                if raw_content.startswith('"') and raw_content.endswith('"'):
-                    raw_content = raw_content[1:-1]
-                
-                # Unescape if needed
-                if '\\n' in raw_content or '\\"' in raw_content:
-                    raw_content = raw_content.replace('\\n', '\n')
-                    raw_content = raw_content.replace('\\"', '"')
-                    raw_content = raw_content.replace('\\\\', '\\')
-                
-                if raw_content and len(raw_content) > 50:  # Minimum content length
-                    files[filename] = raw_content
-                    logger.info(f"✅ Extracted {filename} ({len(raw_content)} chars) via raw extraction")
+                        for pattern in end_patterns:
+                            match_end = re.search(pattern, remaining)
+                            if match_end:
+                                content_end = content_start + match_end.start()
+                                break
+                    
+                    raw_content = response[content_start:content_end].strip()
+                    raw_content = raw_content.rstrip(',').strip()
+                    
+                    if raw_content and len(raw_content) > 50:
+                        files[filename] = raw_content
+                        logger.info(f"✅ Extracted {filename} ({len(raw_content)} chars) via raw extraction")
             
         except Exception as e:
             logger.error(f"Raw content extraction error: {str(e)}")
