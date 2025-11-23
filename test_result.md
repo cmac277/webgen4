@@ -119,6 +119,18 @@ backend:
       - working: "partial"
         agent: "testing"
         comment: "NETLIFY GENERATION WORKING BUT DEPLOYMENT FAILING - Comprehensive testing completed. FINDINGS: 1) Backend API Endpoints: ✅ WORKING - Session creation (200 OK), models endpoint (4 models available), root endpoint operational, 2) Netlify Project Generation: ✅ WORKING - Successfully generates projects with beautiful design quality. Database shows project with complete HTML (renovation business site with Tailwind CSS, Font Awesome icons, Google Fonts, modern design), 3) AI Service: ✅ WORKING - Project analysis successful, design knowledge properly applied, generates high-quality HTML with professional styling, 4) Netlify Deployment: ❌ FAILING - Generation completes but deployment step fails. No projects in database have netlify_site_id or deploy_preview_url, 5) AI Service Intermittent Issues: ⚠️ PARTIAL - Occasional 502 Bad Gateway errors and timeouts during generation, but when successful produces excellent results. ARCHITECTURE ASSESSMENT: The design quality restoration is successful - generated HTML shows modern renovation business site with Tailwind CSS, professional styling, Font Awesome icons, and responsive design. The issue is deployment, not generation quality. DEPLOYMENT ISSUE: The /api/netlify/generate-and-deploy endpoint generates projects successfully but fails during Netlify API deployment step."
+
+  - task: "Netlify Auto-Deployment Integration"
+    implemented: true
+    working: false
+    file: "/app/backend/netlify_deploy_service.py, /app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "CRITICAL DEPLOYMENT FAILURE - Netlify auto-deployment not working. DETAILED TESTING RESULTS: 1) Session Creation: ✅ WORKING - Successfully creates sessions, 2) Netlify Project Generation: ✅ WORKING - Generates complete projects with files (index.html, netlify.toml), beautiful design quality confirmed, 3) Deployment Step: ❌ FAILING - /api/netlify/generate-and-deploy endpoint times out during deployment phase, 4) Database Analysis: Found 1 Netlify project in database with complete files but NO deployment info (missing netlify_site_id, deploy_preview_url), 5) AI Service Issues: Intermittent 502 Bad Gateway errors causing timeouts, 6) Backend Logs: Show successful project analysis and generation, but deployment step fails silently. ROOT CAUSE: The deployment integration (netlify_deploy_service.py) is not successfully communicating with Netlify API or deployment step is failing. IMPACT: Users can generate projects but cannot get instant Deploy Preview URLs as intended. REQUIRES: Investigation of Netlify API integration, API token validation, and deployment service debugging."
   
 backend:
   - task: "AI Website Generation - Fix repetitive layouts"
