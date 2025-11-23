@@ -9,6 +9,13 @@ import re
 from typing import Dict, Any, List, Optional
 from emergentintegrations.llm.chat import LlmChat, UserMessage
 from fastapi import HTTPException
+from design_knowledge_base import (
+    FRAMEWORKS, 
+    DESIGN_PRINCIPLES, 
+    COMPONENT_PATTERNS, 
+    ANIMATION_PATTERNS,
+    WEBSITE_PATTERNS
+)
 
 logger = logging.getLogger(__name__)
 
