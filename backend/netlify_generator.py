@@ -474,20 +474,47 @@ Respond with JSON:
     def _parse_project_response(self, response: str) -> Dict[str, Any]:
         """Parse AI response to extract project structure"""
         try:
-            # Try to find JSON block
-            json_start = response.find("{")
+            # Log first 500 chars of response for debugging
+            logger.info(f"Response preview: {response[:500]}")
+            
+            # Try to find JSON block - look for files object specifically
+            json_start = response.find('{"files"')
+            if json_start < 0:
+                json_start = response.find('"files"')
+                if json_start >= 0:
+                    # Find the opening brace before "files"
+                    json_start = response.rfind("{", 0, json_start)
+            
+            if json_start < 0:
+                # Last resort - find any JSON object
+                json_start = response.find("{")
+            
             json_end = response.rfind("}") + 1
             
             if json_start >= 0 and json_end > json_start:
                 json_str = response[json_start:json_end]
+                logger.info(f"Attempting to parse JSON of length: {len(json_str)}")
+                
+                # Try parsing
                 project_data = json.loads(json_str)
-                return project_data
+                
+                # Validate structure
+                if "files" in project_data and isinstance(project_data["files"], dict):
+                    logger.info(f"✅ Valid project structure with {len(project_data['files'])} files")
+                    return project_data
+                else:
+                    logger.warning("JSON parsed but missing 'files' key or invalid structure")
+                    logger.info(f"Keys found: {list(project_data.keys())}")
+                    return {}
             else:
-                logger.error("No JSON found in response")
+                logger.error("No JSON block found in response")
+                logger.info(f"Response length: {len(response)}, starts with: {response[:200]}")
                 return {}
                 
         except json.JSONDecodeError as e:
             logger.error(f"JSON parse error: {str(e)}")
+            logger.error(f"Error at position {e.pos}")
+            logger.error(f"Context: ...{json_str[max(0, e.pos-50):min(len(json_str), e.pos+50)]}...")
             return {}
     
     def _extract_requirements(self, prompt: str) -> Dict[str, List[str]]:
