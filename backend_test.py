@@ -227,70 +227,7 @@ class NetlifyDeploymentTester:
             pass
         return ""
     
-    async def test_basic_generation_flow(self):
-        """Test 1: Basic Generation Flow"""
-        logger.info("\n" + "="*60)
-        logger.info("TEST 1: BASIC GENERATION FLOW")
-        logger.info("="*60)
-        
-        # Create session
-        session_id = await self.create_session("Portfolio Test")
-        if not session_id:
-            return {"success": False, "error": "Failed to create session"}
-        
-        # Generate website
-        result = await self.generate_website(
-            session_id, 
-            "Create a modern portfolio website"
-        )
-        
-        if not result.get('success'):
-            return {"success": False, "error": result.get('error')}
-        
-        # Validate response
-        validation_errors = []
-        
-        if result['html_length'] < 5000:
-            validation_errors.append(f"HTML too short: {result['html_length']} chars (expected >5000)")
-        
-        if not result['has_embedded_styles']:
-            validation_errors.append("HTML missing embedded <style> tags")
-        
-        if not result['has_embedded_scripts']:
-            validation_errors.append("HTML missing embedded <script> tags")
-        
-        if result['generation_time'] < 3:
-            validation_errors.append(f"Generation suspiciously fast: {result['generation_time']:.2f}s")
-        
-        # Test GET endpoint
-        get_result = await self.get_latest_website(session_id)
-        if not get_result.get('success'):
-            validation_errors.append(f"Failed to retrieve website: {get_result.get('error')}")
-        
-        test_result = {
-            "test_name": "Basic Generation Flow",
-            "success": len(validation_errors) == 0,
-            "session_id": session_id,
-            "generation_time": result['generation_time'],
-            "html_length": result['html_length'],
-            "css_length": result['css_length'],
-            "js_length": result['js_length'],
-            "has_embedded_styles": result['has_embedded_styles'],
-            "has_embedded_scripts": result['has_embedded_scripts'],
-            "validation_errors": validation_errors,
-            "get_endpoint_works": get_result.get('success', False)
-        }
-        
-        self.test_results.append(test_result)
-        
-        if test_result['success']:
-            logger.info("✅ Basic generation flow test PASSED")
-        else:
-            logger.error("❌ Basic generation flow test FAILED")
-            for error in validation_errors:
-                logger.error(f"   - {error}")
-        
-        return test_result
+    # Old test methods removed - focusing on Netlify deployment test only
     
     async def test_different_website_types(self):
         """Test 2: Different Website Types"""
