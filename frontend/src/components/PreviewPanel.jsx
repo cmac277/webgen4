@@ -64,6 +64,17 @@ export default function PreviewPanel({ website }) {
             </TabsList>
 
             <div className="flex items-center space-x-2">
+              {website?.netlify_deploy_url && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => window.open(website.netlify_deploy_url, '_blank')}
+                  className="bg-gradient-to-r from-teal-500 to-cyan-600 hover:from-teal-600 hover:to-cyan-700 text-white font-semibold"
+                  data-testid="netlify-url-button"
+                >
+                  🌐 View Live Site
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="icon"
