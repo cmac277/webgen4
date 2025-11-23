@@ -518,44 +518,70 @@ Respond with JSON:
             # Log first 500 chars of response for debugging
             logger.info(f"Response preview: {response[:500]}")
             
-            # Try to find JSON block - look for files object specifically
+            # Strip any leading/trailing whitespace
+            response = response.strip()
+            
+            # Check if response starts with JSON directly
+            if response.startswith('{'):
+                logger.info(f"✅ Response starts with JSON object")
+                json_str = response
+                
+                # Try parsing the entire response as JSON first
+                try:
+                    project_data = json.loads(json_str)
+                    
+                    # Validate structure
+                    if "files" in project_data and isinstance(project_data["files"], dict):
+                        logger.info(f"✅ Valid project structure with {len(project_data['files'])} files")
+                        return project_data
+                    else:
+                        logger.warning("JSON parsed but missing 'files' key or invalid structure")
+                        logger.info(f"Keys found: {list(project_data.keys())}")
+                except json.JSONDecodeError as e:
+                    logger.error(f"JSON parse error on full response: {str(e)}")
+                    logger.error(f"Error at position {e.pos}")
+                    # Try to find valid JSON substring
+                    pass
+            
+            # Fallback: Try to find JSON block within response
             json_start = response.find('{"files"')
             if json_start < 0:
-                json_start = response.find('"files"')
-                if json_start >= 0:
-                    # Find the opening brace before "files"
-                    json_start = response.rfind("{", 0, json_start)
+                json_start = response.find('{')
             
             if json_start < 0:
-                # Last resort - find any JSON object
-                json_start = response.find("{")
+                logger.error("No JSON block found in response")
+                logger.info(f"Response length: {len(response)}, starts with: {response[:200]}")
+                return {}
             
             json_end = response.rfind("}") + 1
             
-            if json_start >= 0 and json_end > json_start:
-                json_str = response[json_start:json_end]
-                logger.info(f"Attempting to parse JSON of length: {len(json_str)}")
-                
-                # Try parsing
-                project_data = json.loads(json_str)
-                
-                # Validate structure
-                if "files" in project_data and isinstance(project_data["files"], dict):
-                    logger.info(f"✅ Valid project structure with {len(project_data['files'])} files")
-                    return project_data
-                else:
-                    logger.warning("JSON parsed but missing 'files' key or invalid structure")
-                    logger.info(f"Keys found: {list(project_data.keys())}")
-                    return {}
+            if json_end <= json_start:
+                logger.error("Invalid JSON boundaries")
+                return {}
+            
+            json_str = response[json_start:json_end]
+            logger.info(f"Attempting to parse JSON substring of length: {len(json_str)}")
+            
+            # Try parsing
+            project_data = json.loads(json_str)
+            
+            # Validate structure
+            if "files" in project_data and isinstance(project_data["files"], dict):
+                logger.info(f"✅ Valid project structure with {len(project_data['files'])} files")
+                return project_data
             else:
-                logger.error("No JSON block found in response")
-                logger.info(f"Response length: {len(response)}, starts with: {response[:200]}")
+                logger.warning("JSON parsed but missing 'files' key or invalid structure")
+                logger.info(f"Keys found: {list(project_data.keys())}")
                 return {}
                 
         except json.JSONDecodeError as e:
             logger.error(f"JSON parse error: {str(e)}")
             logger.error(f"Error at position {e.pos}")
-            logger.error(f"Context: ...{json_str[max(0, e.pos-50):min(len(json_str), e.pos+50)]}...")
+            if 'json_str' in locals():
+                logger.error(f"Context: ...{json_str[max(0, e.pos-50):min(len(json_str), e.pos+50)]}...")
+            return {}
+        except Exception as e:
+            logger.error(f"Unexpected error parsing response: {str(e)}")
             return {}
     
     def _extract_requirements(self, prompt: str) -> Dict[str, List[str]]:
