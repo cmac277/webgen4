@@ -18,6 +18,7 @@ from s3_service import S3Service
 from ai_service import AIService
 from project_manager import ProjectManager
 from netlify_generator import NetlifyGenerator
+from netlify_deploy_service import NetlifyDeployService
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
