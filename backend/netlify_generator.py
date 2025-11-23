@@ -154,7 +154,7 @@ USER REQUESTED THESE SPECIFIC ITEMS:
 {requirements_json}
 
 VERIFICATION CHECKLIST (Complete ALL items):
-{checklist}
+""" + checklist + """
 
 GENERATE:
 1. Frontend files (HTML/CSS/JS or React)
