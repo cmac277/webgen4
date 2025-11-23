@@ -205,24 +205,41 @@ OUTPUT AS JSON with structure shown above."""
             chat.with_model(provider, model)
             
             response = await chat.send_message(UserMessage(text=user_prompt))
-            logger.info(f"AI Response received: {len(response)} characters")
+            logger.info(f"✅ AI Response received: {len(response)} characters")
             
             # Parse the JSON response
             project_data = self._parse_project_response(response)
             
             if not project_data.get("files"):
-                logger.error("No files in response, generating fallback")
-                project_data = self._generate_fallback_project(prompt, analysis)
+                logger.warning("No files parsed from AI response, attempting alternative parsing...")
+                # Try to extract files from response even if not perfect JSON
+                project_data = self._extract_files_from_text(response)
+                
+                if not project_data.get("files"):
+                    logger.error("❌ Could not extract any files from AI response")
+                    logger.error("Falling back to template project")
+                    project_data = self._generate_fallback_project(prompt, analysis)
+                else:
+                    logger.info(f"✅ Extracted {len(project_data['files'])} files from text response")
+            else:
+                logger.info(f"✅ Successfully parsed {len(project_data['files'])} files from JSON response")
             
             # Validate Netlify requirements
             self._validate_netlify_project(project_data)
             
-            logger.info(f"✅ Generated {len(project_data['files'])} files")
+            logger.info(f"✅ Netlify project ready with {len(project_data['files'])} files")
             return project_data
             
         except Exception as e:
-            logger.error(f"Generation failed: {str(e)}")
-            # Return fallback project
+            # Only fallback on genuine errors (not budget issues - those should raise)
+            error_msg = str(e).lower()
+            if "budget" in error_msg or "exceeded" in error_msg:
+                logger.error(f"❌ BUDGET ERROR: {str(e)}")
+                logger.error("Cannot generate - API budget exceeded. Please increase budget.")
+                raise HTTPException(status_code=402, detail=f"API budget exceeded: {str(e)}")
+            
+            logger.error(f"❌ Generation failed with error: {str(e)}")
+            logger.warning("Falling back to template project")
             return self._generate_fallback_project(prompt, analysis)
     
     async def _edit_netlify_project(self, prompt: str, current_project: Dict, provider: str, model: str, session_id: str) -> Dict[str, Any]:
