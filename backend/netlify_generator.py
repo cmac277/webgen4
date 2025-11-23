@@ -378,6 +378,73 @@ Ensure the edited project remains Netlify-compatible!"""
             logger.warning("Returning original project unchanged")
             return current_project
     
+    async def _retry_with_missing_requirements(
+        self, 
+        original_prompt: str,
+        requirements: Dict[str, List[str]],
+        missing_requirements: List[str],
+        provider: str,
+        model: str,
+        session_id: str
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Retry generation with explicit focus on missing requirements
+        """
+        logger.info(f"🔄 RETRY: Adding missing requirements to generation")
+        
+        missing_list = "\n".join([f"- {req}" for req in missing_requirements])
+        
+        enhanced_prompt = f"""CRITICAL RETRY - MISSING REQUIREMENTS DETECTED
+
+Original request: {original_prompt}
+
+YOU FAILED TO INCLUDE THESE REQUIRED ITEMS:
+{missing_list}
+
+Generate a COMPLETE project that includes:
+1. Everything from the original request
+2. SPECIFICALLY add all the missing items listed above
+
+This is your LAST CHANCE to get it right. Include EVERY requirement."""
+
+        retry_system = """You are an expert developer who NEVER misses requirements.
+
+Your previous attempt was INCOMPLETE. You MUST now generate code that includes EVERY SINGLE requirement.
+
+Focus especially on the missing items, but don't remove anything you already had."""
+
+        try:
+            chat = LlmChat(
+                api_key=self.api_key,
+                session_id=f"{session_id}_retry",
+                system_message=retry_system
+            )
+            chat.with_model(provider, model)
+            
+            response = await chat.send_message(UserMessage(text=enhanced_prompt))
+            logger.info(f"✅ Retry response received: {len(response)} characters")
+            
+            project_data = self._parse_project_response(response)
+            
+            if project_data.get("files"):
+                # Validate retry attempt
+                html_content = project_data.get("files", {}).get("index.html", "")
+                retry_validation = self._validate_requirements(html_content, requirements)
+                
+                logger.info(f"📊 Retry validation: {retry_validation['completeness_score']:.1f}%")
+                
+                if retry_validation["completeness_score"] > 70:
+                    logger.info(f"✅ Retry successful! Completeness improved.")
+                    return project_data
+                else:
+                    logger.warning(f"⚠️ Retry still incomplete. Proceeding with best effort.")
+                    return project_data
+            
+        except Exception as e:
+            logger.error(f"Retry failed: {str(e)}")
+        
+        return None
+    
     async def _analyze_project_requirements(self, prompt: str, provider: str, model: str, session_id: str) -> Dict[str, Any]:
         """Analyze what the user wants to build"""
         
