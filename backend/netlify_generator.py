@@ -198,7 +198,25 @@ IMPORTANT RULES:
 Go through the verification checklist above and confirm EVERY item is present in your HTML.
 If ANY item is missing, ADD IT NOW before responding.
 
-OUTPUT AS JSON with structure shown above.
+🚨 OUTPUT FORMAT - EXTREMELY IMPORTANT:
+Respond with ONLY valid JSON. No explanations, no markdown, no code blocks.
+Start with { and end with }. Follow this exact structure:
+
+{
+  "files": {
+    "index.html": "<!DOCTYPE html>...",
+    "styles.css": "body {...}",
+    "app.js": "// your js",
+    "netlify.toml": "[build]..."
+  },
+  "deploy_config": {
+    "build_command": "",
+    "publish_dir": ".",
+    "functions_dir": "netlify/functions"
+  }
+}
+
+Do NOT wrap in markdown code blocks. Just pure JSON.
 
 ═══════════════════════════════════════════════════════════════
 🚨 REQUIREMENT COMPLETION CHECKLIST - MANDATORY
