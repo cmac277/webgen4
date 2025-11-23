@@ -124,7 +124,7 @@ CRITICAL NETLIFY REQUIREMENTS
    - Environment variables via process.env.VARIABLE_NAME
    - Include placeholder keys
 
-5. **FRONTEND REQUIREMENTS - CRITICAL VISUAL DESIGN**
+5. **FRONTEND REQUIREMENTS - CRITICAL VISUAL DESIGN & FILE STRUCTURE**
    - MUST use Tailwind CSS via CDN: <script src="https://cdn.tailwindcss.com"></script>
    - OR use modern CSS with gradients, shadows, animations
    - Modern, responsive, pixel-perfect design
@@ -134,6 +134,12 @@ CRITICAL NETLIFY REQUIREMENTS
    - Hover effects, transitions, animations
    - Modern fonts from Google Fonts
    - Font Awesome icons (NOT emojis): <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
+   **CRITICAL: HTML MUST HAVE EMBEDDED STYLES AND SCRIPTS**
+   - Put ALL CSS inside <style> tags in <head>
+   - Put ALL JavaScript inside <script> tags before </body>
+   - DO NOT reference external files like href="styles.css" or src="app.js"
+   - The system will extract embedded content into separate files automatically
 
 """ + frameworks_info + """
 
