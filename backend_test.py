@@ -433,6 +433,22 @@ class NetlifyDeploymentTester:
                 logger.info(f"Site ID: {deployment.get('site_id', 'N/A')}")
                 logger.info(f"Deploy ID: {deployment.get('deploy_id', 'N/A')}")
                 logger.info(f"Build Status: {deployment.get('build_status', {}).get('state', 'N/A')}")
+                
+                # MAX TOKENS FIX VERIFICATION DETAILS
+                files = project.get('files', {})
+                for filepath, content in files.items():
+                    if 'index.html' in filepath:
+                        logger.info(f"HTML File Size: {len(content)} characters")
+                    elif 'styles.css' in filepath:
+                        logger.info(f"CSS File Size: {len(content)} characters")
+                    elif 'app.js' in filepath:
+                        logger.info(f"JS File Size: {len(content)} characters")
+                
+                log_analysis = test_data.get('log_analysis', {})
+                ai_chars = log_analysis.get('ai_response_chars')
+                if ai_chars:
+                    logger.info(f"AI Response Size: {ai_chars} characters")
+                    logger.info(f"Max Tokens Fix: {'✅ WORKING' if ai_chars > 20000 else '❌ INSUFFICIENT'}")
         
         if validation_errors:
             logger.info("\nVALIDATION ERRORS:")
