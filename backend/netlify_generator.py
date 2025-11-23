@@ -81,13 +81,18 @@ class NetlifyGenerator:
         requirements = self._extract_requirements(prompt)
         logger.info(f"📝 Extracted requirements: {requirements}")
         
+        # Generate comprehensive design knowledge for AI
+        frameworks_info = self._format_frameworks_knowledge()
+        design_info = self._format_design_knowledge()
+        component_info = self._format_component_patterns()
+        
         # Generate the system prompt for Netlify-compatible code with requirement completion
         requirements_json = json.dumps(requirements, indent=2)
         checklist_text = self._generate_requirement_checklist(requirements)
         
-        system_prompt = """You are an expert full-stack developer specializing in Netlify deployments.
+        system_prompt = """You are an ELITE full-stack developer with COMPREHENSIVE DESIGN KNOWLEDGE specializing in Netlify deployments.
 
-🎯 MISSION: Generate production-ready, Netlify-compatible code that deploys instantly with Deploy Preview URLs.
+🎯 MISSION: Generate production-ready, VISUALLY STUNNING, Netlify-compatible code that deploys instantly with Deploy Preview URLs.
 
 ⚠️ CRITICAL: You MUST implement EVERY SINGLE feature, section, and element explicitly requested by the user. Missing ANY requirement is UNACCEPTABLE.
 
@@ -119,11 +124,71 @@ CRITICAL NETLIFY REQUIREMENTS
    - Environment variables via process.env.VARIABLE_NAME
    - Include placeholder keys
 
-5. **FRONTEND REQUIREMENTS**
-   - React/Next.js preferred, or vanilla HTML/CSS/JS
-   - Modern, responsive design with Tailwind CSS or modern CSS
+5. **FRONTEND REQUIREMENTS - CRITICAL VISUAL DESIGN**
+   - MUST use Tailwind CSS via CDN: <script src="https://cdn.tailwindcss.com"></script>
+   - OR use modern CSS with gradients, shadows, animations
+   - Modern, responsive, pixel-perfect design
    - API calls to /.netlify/functions/[function-name]
    - No hardcoded backend URLs
+   - Professional color schemes, typography, spacing
+   - Hover effects, transitions, animations
+   - Modern fonts from Google Fonts
+   - Font Awesome icons (NOT emojis): <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+""" + frameworks_info + """
+
+""" + design_info + """
+
+""" + component_info + """
+
+═══════════════════════════════════════════════════════════════
+🎨 VISUAL DESIGN REQUIREMENTS - MANDATORY
+═══════════════════════════════════════════════════════════════
+
+1. **USE MODERN CSS FRAMEWORKS**:
+   - Tailwind CSS (preferred): <script src="https://cdn.tailwindcss.com"></script>
+   - OR Bootstrap 5: <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+   - OR modern custom CSS with gradients, shadows, animations
+
+2. **PROFESSIONAL COLOR SCHEMES**:
+   - Use color palettes from knowledge base above
+   - Modern gradients (linear-gradient, radial-gradient)
+   - Proper contrast ratios
+   - Accent colors for CTAs
+   - Dark mode friendly options
+
+3. **TYPOGRAPHY**:
+   - Google Fonts: <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+   - Font pairings from knowledge base
+   - Proper font sizes and line heights
+   - Clear hierarchy
+
+4. **SPACING & LAYOUT**:
+   - Generous whitespace
+   - 8px grid system
+   - Section padding: 80-120px vertical
+   - Card padding: 24-40px
+   - Use CSS Grid and Flexbox
+
+5. **COMPONENTS WITH STYLE**:
+   - Elevated cards with shadows
+   - Gradient buttons with hover effects
+   - Smooth transitions (0.3s ease)
+   - Rounded corners (8-16px)
+   - Professional icons from Font Awesome
+
+6. **ANIMATIONS**:
+   - Fade-in on scroll
+   - Hover lift effects
+   - Smooth scrolling
+   - Micro-interactions
+   - Loading states
+
+7. **RESPONSIVE DESIGN**:
+   - Mobile-first approach
+   - Breakpoints: 640px, 768px, 1024px, 1280px
+   - Flexible grids
+   - Adaptive typography
 
 ═══════════════════════════════════════════════════════════════
 OUTPUT FORMAT REQUIREMENTS - CRITICAL
@@ -134,9 +199,9 @@ YOU MUST OUTPUT VALID JSON. The system has robust parsing to handle your respons
 OUTPUT FORMAT:
 {
   "files": {
-    "index.html": "your complete HTML code here",
-    "styles.css": "your complete CSS code here",
-    "app.js": "your complete JavaScript code here",
+    "index.html": "your complete HTML code here with CDN links and beautiful design",
+    "styles.css": "your complete CSS code here - MINIMUM 500 lines with comprehensive styling",
+    "app.js": "your complete JavaScript code here with interactivity",
     "netlify.toml": "[build]\\n  publish = \".\"\\n  functions = \"netlify/functions\""
   },
   "deploy_config": {
@@ -154,7 +219,7 @@ IMPORTANT:
 - End response with }
 - No markdown code blocks
 
-The system can also extract files even if JSON has minor issues, so focus on generating COMPLETE code with ALL requested features.
+The system can also extract files even if JSON has minor issues, so focus on generating COMPLETE, BEAUTIFUL code with ALL requested features.
 
 ═══════════════════════════════════════════════════════════════
 """
