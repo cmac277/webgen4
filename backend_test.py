@@ -171,7 +171,7 @@ class NetlifyDeploymentTester:
                         logger.info(f"   Status: {response.status}")
                         logger.info(f"   Content Length: {len(content)} chars")
                         logger.info(f"   Contains HTML: {has_html}")
-                        logger.info(f"   Contains Coffee Content: {has_coffee_content}")
+                        logger.info(f"   Contains Renovation Content: {has_renovation_content}")
                         
                         return result
                     else:
