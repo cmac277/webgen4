@@ -148,11 +148,14 @@ class NetlifyDeploymentTester:
                         
                         # Check if it contains HTML content
                         has_html = '<html' in content.lower() or '<!doctype html' in content.lower()
-                        has_coffee_content = any([
-                            'coffee' in content.lower(),
-                            'menu' in content.lower(),
-                            'contact' in content.lower(),
-                            'hero' in content.lower()
+                        has_renovation_content = any([
+                            'renovation' in content.lower(),
+                            'flooring' in content.lower(),
+                            'bathroom' in content.lower(),
+                            'kitchen' in content.lower(),
+                            'epoxy' in content.lower(),
+                            'services' in content.lower(),
+                            'contact' in content.lower()
                         ])
                         
                         result = {
