@@ -561,7 +561,7 @@ Respond with JSON:
             
             # Check if response starts with JSON directly
             if response.startswith('{'):
-                logger.info(f"✅ Response starts with JSON object")
+                logger.info("✅ Response starts with JSON object")
                 json_str = response
                 
                 # Try parsing the entire response as JSON first
