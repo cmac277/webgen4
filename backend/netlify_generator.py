@@ -369,8 +369,24 @@ REMEMBER: Beautiful design is great, but COMPLETENESS is mandatory. Every featur
             # Set max_tokens to allow complete responses
             chat.with_params(max_tokens=16000)
             
-            response = await chat.send_message(UserMessage(text=user_prompt))
-            logger.info(f"✅ AI Response received: {len(response)} characters")
+            # Retry logic for API failures (502 errors, rate limits, etc.)
+            max_retries = 3
+            retry_delay = 2
+            
+            for attempt in range(max_retries):
+                try:
+                    response = await chat.send_message(UserMessage(text=user_prompt))
+                    logger.info(f"✅ AI Response received: {len(response)} characters")
+                    break
+                except Exception as e:
+                    error_str = str(e)
+                    if '502' in error_str or 'BadGateway' in error_str:
+                        if attempt < max_retries - 1:
+                            wait_time = retry_delay * (2 ** attempt)  # Exponential backoff
+                            logger.warning(f"⚠️ 502 error on attempt {attempt + 1}/{max_retries}. Retrying in {wait_time}s...")
+                            await asyncio.sleep(wait_time)
+                            continue
+                    raise  # Re-raise if not 502 or last attempt
             
             # Parse the JSON response
             project_data = self._parse_project_response(response)
