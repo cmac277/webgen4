@@ -247,13 +247,26 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
             
             for attempt in range(max_retries):
                 try:
-                    # Add timeout wrapper for stability
-                    response = await asyncio.wait_for(
-                        chat.send_message(UserMessage(text=user_prompt)),
-                        timeout=120.0  # 2 minute timeout per attempt
-                    )
-                    logger.info(f"✅ AI Response received: {len(response)} characters on attempt {attempt + 1}")
-                    break
+                    # Rate limiting to avoid overwhelming the API
+                    import time
+                    current_time = time.time()
+                    time_since_last = current_time - self._last_request_time
+                    if time_since_last < self._min_request_interval:
+                        wait = self._min_request_interval - time_since_last
+                        logger.info(f"⏱️ Rate limiting: waiting {wait:.2f}s...")
+                        await asyncio.sleep(wait)
+                    
+                    # Use semaphore to limit concurrent requests
+                    async with self._request_semaphore:
+                        self._last_request_time = time.time()
+                        
+                        # Add timeout wrapper for stability
+                        response = await asyncio.wait_for(
+                            chat.send_message(UserMessage(text=user_prompt)),
+                            timeout=120.0  # 2 minute timeout per attempt
+                        )
+                        logger.info(f"✅ AI Response received: {len(response)} characters on attempt {attempt + 1}")
+                        break
                     
                 except asyncio.TimeoutError:
                     last_error = "Request timed out after 120 seconds"
