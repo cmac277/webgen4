@@ -310,38 +310,92 @@ RULES:
 ═══════════════════════════════════════════════════════════════
 """
         
-        # EXPLICIT user prompt emphasizing design
-        user_prompt = f"""Create a STUNNING, PROFESSIONAL website for:
+        # ULTRA-EXPLICIT user prompt with zero tolerance for blank space
+        user_prompt = f"""Create an AWARD-WINNING, VISUALLY STUNNING website for:
 
 "{prompt}"
 
-CRITICAL REQUIREMENTS:
-✅ index.html MUST include ALL these CDN links in <head>:
-   - Tailwind CSS: <script src="https://cdn.tailwindcss.com"></script>
-   - Font Awesome: <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-   - Google Fonts: <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-   - Custom CSS: <link rel="stylesheet" href="styles.css">
+🚨 ZERO BLANK SPACE POLICY:
+- Every pixel must be intentional
+- Dense, visually rich layouts
+- Multiple overlapping elements
+- Generous use of gradients, shadows, and colors
+- Large, bold typography everywhere
+- Icons, badges, and decorative elements throughout
 
-✅ styles.css MUST include (MINIMUM 300 lines):
-   - Modern gradients (purple, blue, pink, etc.)
-   - Box shadows and depth
-   - Hover effects and transitions
-   - Professional color scheme
-   - Responsive design
+═══════════════════════════════════════════════════════════════
+CRITICAL: INCLUDE ALL DESIGN RESOURCES
+═══════════════════════════════════════════════════════════════
 
-✅ app.js MUST include:
-   - Smooth scrolling
-   - Interactive features
-   - Mobile menu toggle
+✅ index.html MUST have ALL these CDN links:
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="styles.css">
+   
+   AND at end of body:
+   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+   <script src="app.js"></script>
 
-✅ DESIGN QUALITY:
-   - Beautiful gradient backgrounds
-   - Modern card designs with shadows
-   - Professional typography
-   - Smooth animations
-   - Fully responsive with Tailwind classes
+═══════════════════════════════════════════════════════════════
+MANDATORY DESIGN FEATURES
+═══════════════════════════════════════════════════════════════
 
-Generate complete JSON with ALL 3 files. Make it PIXEL-PERFECT and BEAUTIFUL!"""
+✅ HERO SECTION (Full screen, min-h-screen):
+   - Massive headlines (text-6xl lg:text-7xl font-bold)
+   - Vibrant gradient background (from-purple-600 via-pink-600 to-blue-600)
+   - Multiple CTA buttons with different styles
+   - Floating decorative elements
+   - Large icons (text-8xl)
+   - Animate.css animations (animate__fadeInUp)
+
+✅ CONTENT SECTIONS (NO blank space):
+   - Dense grids (grid-cols-3 lg:grid-cols-4 gap-8)
+   - Glassmorphism cards (backdrop-blur-lg bg-white/10)
+   - Large feature icons (text-6xl text-gradient)
+   - Overlapping elements with z-index
+   - Background patterns or gradients
+   - Section dividers with SVG waves
+
+✅ CARDS & COMPONENTS:
+   - Deep shadows (shadow-2xl)
+   - Rounded corners (rounded-2xl)
+   - Hover transforms (hover:scale-105 hover:-rotate-2)
+   - Gradient borders
+   - Icon badges in corners
+   - AOS scroll animations (data-aos="fade-up")
+
+✅ styles.css REQUIREMENTS (MINIMUM 500 lines):
+   - 10+ CSS custom properties for colors
+   - 5+ complex gradients with 3+ colors
+   - Glassmorphism: backdrop-filter: blur(16px)
+   - Multiple @keyframes animations (float, pulse, glow, rotate)
+   - Advanced shadows: box-shadow: 0 20px 60px rgba()
+   - Pseudo-elements for decorations (::before, ::after)
+   - Clip-path for unique shapes
+   - Transform-style: preserve-3d for 3D effects
+
+✅ app.js REQUIREMENTS:
+   - AOS.init() with settings
+   - Smooth scroll behavior
+   - Counter animations for statistics
+   - Parallax effects
+   - Interactive hover states
+   - Form validation with animations
+   - Image lazy loading
+
+✅ VISUAL RICHNESS:
+   - Use Font Awesome icons everywhere (fas fa-star, fa-fire, fa-crown)
+   - Gradient text (bg-clip-text text-transparent)
+   - Multiple background layers
+   - Decorative shapes and blobs
+   - Stats counters with large numbers
+   - Testimonials with profile images
+   - Social media icons
+   - Newsletter signup section
+
+Generate complete JSON with ALL 3 files. Make it VISUALLY STUNNING with ZERO wasted space!"""
 
         # Try multiple models if one fails
         # ONLY use models that actually work with this Emergent API key
