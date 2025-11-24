@@ -202,12 +202,13 @@ Requirements:
 
 Generate complete JSON with all 3 files. Make it visually stunning!"""
 
-        # Try multiple models if one fails - use ACTUAL model names that work
+        # Try multiple models if one fails
+        # If user requested gpt-5 or similar, also try alternative models
         models_to_try = [
             (provider, model),  # Try requested model first
-            ("openai", "gpt-4o"),  # Fallback to GPT-4o (reliable)
-            ("openai", "gpt-4o-mini"),  # Fallback to GPT-4o mini
-            ("openai", "gpt-3.5-turbo"),  # Last resort - fastest
+            ("openai", "gpt-4o"),  # Fallback to GPT-4o (very reliable)
+            ("google", "gemini-2.5-pro"),  # Try Gemini
+            ("anthropic", "claude-sonnet-4"),  # Try Claude
         ]
         
         # Remove duplicates while preserving order
