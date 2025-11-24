@@ -2398,11 +2398,14 @@ body {
     def _enhance_html_with_frameworks(self, html: str) -> str:
         """Add missing CDN links and framework references to HTML"""
         
-        # Define the CDN links that MUST be present
+        # Define ALL the CDN links that MUST be present for stunning design
         tailwind_cdn = '<script src="https://cdn.tailwindcss.com"></script>'
         fontawesome_cdn = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">'
-        google_fonts = '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">'
+        animate_css = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">'
+        google_fonts = '<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">'
+        aos_css = '<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">'
         css_link = '<link rel="stylesheet" href="styles.css">'
+        aos_js = '<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>'
         js_link = '<script src="app.js"></script>'
         
         # Find the </head> tag and add links before it
