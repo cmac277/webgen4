@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend Test Suite for Netlify Generation and Deployment Flow
-Tests the complete Netlify auto-deployment functionality as requested in review
+CRITICAL PRIORITY TESTING - Bulletproof Failsafe System Verification
+Tests the comprehensive 3-layer failsafe system to guarantee 100% success rate
 """
 
 import asyncio
@@ -10,6 +10,7 @@ import json
 import time
 import os
 import re
+import subprocess
 from typing import Dict, Any, List
 import logging
 
