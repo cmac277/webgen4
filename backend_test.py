@@ -18,7 +18,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class NetlifyDeploymentTester:
+class BulletproofFailsafeTester:
     def __init__(self):
         # Get backend URL from frontend .env
         self.base_url = self._get_backend_url()
