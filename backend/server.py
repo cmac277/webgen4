@@ -572,12 +572,17 @@ async def deploy_to_netlify(project_id: str, auto_deploy: bool = True):
     if not files:
         raise HTTPException(status_code=400, detail="No files to deploy")
     
+    # Log all files being deployed
+    logger.info(f"📦 Files to deploy: {list(files.keys())}")
+    for filename, content in files.items():
+        logger.info(f"   - {filename}: {len(content)} chars")
+    
     # Generate site name from project
     from slugify import slugify
     base_name = slugify(project.get("prompt", "code-weaver-site")[:30])
     
     try:
-        # Deploy to Netlify
+        # Deploy to Netlify - ALL files in the files dict will be uploaded
         deploy_result = await netlify_deploy_service.create_site(
             site_name=base_name,
             project_files=files
