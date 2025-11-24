@@ -619,16 +619,16 @@ class BulletproofFailsafeTester:
         }
 
 async def main():
-    """Main test runner for Netlify Deployment System"""
-    tester = NetlifyDeploymentTester()
-    results = await tester.run_netlify_deployment_test()
+    """Main test runner for Bulletproof Failsafe System"""
+    tester = BulletproofFailsafeTester()
+    results = await tester.run_bulletproof_failsafe_test()
     
     # Return exit code based on results
     if results['success']:
-        logger.info("🎉 Netlify deployment test passed!")
+        logger.info("🎉 BULLETPROOF FAILSAFE SYSTEM VERIFIED - NEVER FAILS!")
         return 0
     else:
-        logger.error(f"💥 Netlify deployment test failed!")
+        logger.error(f"💥 Bulletproof failsafe system test failed!")
         return 1
 
 if __name__ == "__main__":
