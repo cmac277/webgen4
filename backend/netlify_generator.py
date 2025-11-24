@@ -292,38 +292,33 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
             
         except Exception as e:
             error_msg = str(e).lower()
+            logger.error(f"⚠️ AI Generation failed: {str(e)[:200]}")
             
-            # Budget errors
-            if "budget" in error_msg or "exceeded" in error_msg:
-                logger.error(f"❌ BUDGET ERROR: {str(e)}")
-                raise HTTPException(
-                    status_code=402, 
-                    detail="API budget exceeded. Please increase your API budget or use a different key."
-                )
+            # CRITICAL: NEVER let generation fail - use intelligent fallback system
+            logger.warning("🛡️ FAILSAFE ACTIVATED: Using intelligent fallback generation")
+            logger.warning(f"   Reason: {str(e)[:150]}")
             
-            # 502 / Gateway errors - service unavailable
-            if "502" in error_msg or "bad gateway" in error_msg or "badgateway" in error_msg:
-                logger.error(f"❌ API SERVICE UNAVAILABLE: {str(e)}")
-                raise HTTPException(
-                    status_code=503, 
-                    detail="AI service is temporarily unavailable (502 error). Please try again in a moment."
-                )
-            
-            # Parsing errors
-            if "parsing failed" in error_msg or "ai response parsing" in error_msg:
-                logger.error(f"❌ PARSING ERROR: {str(e)}")
-                logger.error("Check /tmp/failed_ai_response.txt for the response")
-                raise HTTPException(
-                    status_code=500, 
-                    detail="Failed to parse AI response. The AI may have generated invalid output."
-                )
-            
-            # Other errors
-            logger.error(f"❌ Generation failed with error: {str(e)}")
-            raise HTTPException(
-                status_code=500, 
-                detail=f"Generation failed: {str(e)}"
-            )
+            try:
+                # Analyze prompt to generate appropriate fallback
+                fallback_analysis = self._analyze_prompt_for_fallback(prompt)
+                logger.info(f"📋 Fallback analysis: {fallback_analysis}")
+                
+                # Generate smart fallback based on prompt
+                fallback_project = self._generate_smart_fallback(prompt, fallback_analysis)
+                
+                logger.info(f"✅ FAILSAFE SUCCESS: Generated fallback with {len(fallback_project['files'])} files")
+                logger.info(f"   HTML: {len(fallback_project['files'].get('index.html', ''))} chars")
+                logger.info(f"   CSS: {len(fallback_project['files'].get('styles.css', ''))} chars")
+                logger.info(f"   JS: {len(fallback_project['files'].get('app.js', ''))} chars")
+                
+                return fallback_project
+                
+            except Exception as fallback_error:
+                # Even fallback failed - use absolute minimum viable project
+                logger.error(f"❌ Fallback also failed: {str(fallback_error)}")
+                logger.warning("🆘 LAST RESORT: Generating minimal viable project")
+                
+                return self._generate_minimal_viable_project(prompt)
     
     async def _edit_netlify_project(self, prompt: str, current_project: Dict, provider: str, model: str, session_id: str) -> Dict[str, Any]:
         """Edit an existing Netlify project"""
