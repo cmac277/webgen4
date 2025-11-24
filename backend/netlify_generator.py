@@ -222,7 +222,7 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
         response = None
         all_errors = []
         total_attempts = 0
-        max_total_attempts = 4  # 🚨 BALANCED: 4 attempts to generate custom content while protecting credits
+        max_total_attempts = 6  # 🚨 BALANCED: 6 attempts across multiple models (2 per model) to generate custom content
         
         for model_idx, (try_provider, try_model) in enumerate(unique_models):
             # Stop if we've already made too many attempts
