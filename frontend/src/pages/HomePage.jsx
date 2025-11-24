@@ -15,7 +15,7 @@ export default function HomePage() {
   const [messages, setMessages] = useState([]);
   const [generatedWebsite, setGeneratedWebsite] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedModel, setSelectedModel] = useState('claude-sonnet-4');
+  const [selectedModel, setSelectedModel] = useState('gpt-5');
   const [generationSteps, setGenerationSteps] = useState([]);
 
   useEffect(() => {
