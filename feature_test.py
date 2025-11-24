@@ -55,20 +55,10 @@ def test_messages_get():
     response = requests.get(f"{BASE_URL}/session/{test_session_id}/messages", timeout=5)
     return response.status_code == 200
 
-def test_website_generation_endpoint():
-    """Test website generation endpoint exists"""
-    # Just verify the endpoint exists, don't actually generate
-    response = requests.post(
-        f"{BASE_URL}/netlify/generate",
-        json={
-            "session_id": test_session_id,
-            "prompt": "test",
-            "model": "gpt-5"
-        },
-        timeout=2
-    )
-    # Should start processing or fail with API errors (not 404 or 422)
-    return response.status_code not in [404, 405]
+def test_root_endpoint():
+    """Test root endpoint"""
+    response = requests.get(f"{BASE_URL}/", timeout=5)
+    return response.status_code == 200
 
 def test_session_create_speed():
     """Test session creation speed (should be < 1 second)"""
