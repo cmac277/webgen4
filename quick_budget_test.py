@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 async def test_single_generation():
     """Test a single generation to verify budget fix"""
-    base_url = "https://code-weaver-9.preview.emergentagent.com/api"
+    base_url = "https://codeweaver-30.preview.emergentagent.com/api"
     
     # Create session
     async with aiohttp.ClientSession() as session:

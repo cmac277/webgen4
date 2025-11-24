@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 async def test_basic_endpoints():
     """Test basic endpoints to see if backend is working"""
-    base_url = "https://code-weaver-9.preview.emergentagent.com/api"
+    base_url = "https://codeweaver-30.preview.emergentagent.com/api"
     
     async with aiohttp.ClientSession() as session:
         # Test 1: Root endpoint
@@ -73,7 +73,7 @@ async def test_basic_endpoints():
 
 async def test_netlify_generation_only(session_id: str):
     """Test just the Netlify generation (without deployment)"""
-    base_url = "https://code-weaver-9.preview.emergentagent.com/api"
+    base_url = "https://codeweaver-30.preview.emergentagent.com/api"
     
     logger.info("Testing Netlify generation only...")
     
