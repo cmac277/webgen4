@@ -55,15 +55,16 @@ def test_messages_get():
     response = requests.get(f"{BASE_URL}/session/{test_session_id}/messages", timeout=5)
     return response.status_code == 200
 
-def test_message_save():
-    """Test saving a message"""
+def test_chat_message():
+    """Test chat message endpoint"""
     response = requests.post(
-        f"{BASE_URL}/session/{test_session_id}/message",
+        f"{BASE_URL}/chat/message",
         json={
-            "role": "user",
-            "content": "Test message"
+            "session_id": test_session_id,
+            "content": "Hello",
+            "model": "gpt-5"
         },
-        timeout=5
+        timeout=10
     )
     return response.status_code == 200
 
@@ -78,10 +79,11 @@ def test_session_create_speed():
     elapsed = time.time() - start
     return response.status_code == 200 and elapsed < 1.0
 
-def test_netlify_models():
-    """Test netlify models endpoint"""
-    response = requests.get(f"{BASE_URL}/netlify/models", timeout=5)
-    return response.status_code == 200
+def test_netlify_project_get():
+    """Test netlify session latest endpoint"""
+    response = requests.get(f"{BASE_URL}/netlify/session/{test_session_id}/latest", timeout=5)
+    # This should return 404 for new session with no projects, which is correct
+    return response.status_code in [200, 404]
 
 def main():
     print("=" * 60)
