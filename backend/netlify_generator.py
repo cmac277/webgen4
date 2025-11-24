@@ -199,23 +199,44 @@ Requirements:
 
 Generate complete JSON with all 3 files. Make it visually stunning!"""
 
-        try:
-            chat = LlmChat(
-                api_key=self.api_key,
-                session_id=session_id,
-                system_message=system_prompt
-            )
-            chat.with_model(provider, model)
-            
-            # Set max_tokens to allow complete responses
-            chat.with_params(max_tokens=16000)
-            
-            # Try with increased retries to avoid premature fallback
-            max_retries = 4  # Give AI more chances before falling back
-            response = None
-            last_error = None
-            
-            for attempt in range(max_retries):
+        # Try multiple models if one fails
+        models_to_try = [
+            (provider, model),  # Try requested model first
+            ("openai", "gpt-5"),  # Fallback to GPT-5
+            ("openai", "gpt-5-mini"),  # Fallback to GPT-5 Mini
+        ]
+        
+        # Remove duplicates while preserving order
+        seen = set()
+        unique_models = []
+        for p, m in models_to_try:
+            key = f"{p}/{m}"
+            if key not in seen:
+                seen.add(key)
+                unique_models.append((p, m))
+        
+        response = None
+        all_errors = []
+        
+        for model_idx, (try_provider, try_model) in enumerate(unique_models):
+            try:
+                logger.info(f"🤖 Trying model {model_idx + 1}/{len(unique_models)}: {try_provider}/{try_model}")
+                
+                chat = LlmChat(
+                    api_key=self.api_key,
+                    session_id=f"{session_id}_{model_idx}",
+                    system_message=system_prompt
+                )
+                chat.with_model(try_provider, try_model)
+                
+                # Set max_tokens to allow complete responses
+                chat.with_params(max_tokens=16000)
+                
+                # Try with moderate retries per model
+                max_retries = 3
+                last_error = None
+                
+                for attempt in range(max_retries):
                 try:
                     logger.info(f"🔄 Generation attempt {attempt + 1}/{max_retries}")
                     
