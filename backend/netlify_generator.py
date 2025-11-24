@@ -129,48 +129,142 @@ class NetlifyGenerator:
         # These extra API calls were burning credits unnecessarily
         logger.info("⚡ STREAMLINED GENERATION: Direct generation without pre-checks")
         
-        # Generate a COMPREHENSIVE system prompt with explicit design requirements
-        system_prompt = """You are an EXPERT web developer who creates STUNNING, MODERN websites.
+        # Generate an ULTRA-COMPREHENSIVE system prompt with ALL design resources
+        system_prompt = """You are a WORLD-CLASS web designer who creates PIXEL-PERFECT, VISUALLY STUNNING websites.
 
-🎯 CRITICAL: Every HTML file MUST include these CDN links in <head>:
+🎯 CRITICAL: Every HTML file MUST include ALL these resources in <head>:
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 
 🎯 CRITICAL: HTML must end with:
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="app.js"></script>
 
 ═══════════════════════════════════════════════════════════════
-MANDATORY DESIGN STANDARDS
+🚨 ZERO BLANK SPACE POLICY - CRITICAL DESIGN RULES
+═══════════════════════════════════════════════════════════════
+
+❌ NO BLANK SPACE - Every section must be visually rich
+❌ NO BORING LAYOUTS - Use asymmetric grids, overlapping elements
+❌ NO PLAIN BACKGROUNDS - Use gradients, patterns, or images
+❌ NO TINY TEXT - Use bold, large headings (text-4xl, text-5xl, text-6xl)
+❌ NO SPARSE CONTENT - Fill with icons, images, cards, badges
+
+✅ USE THESE DESIGN PATTERNS:
+
+1. **HERO SECTIONS** (Full viewport height):
+   - Large bold headlines (text-5xl md:text-6xl lg:text-7xl font-bold)
+   - Gradient backgrounds (from-purple-600 via-pink-600 to-blue-600)
+   - Multiple CTAs with different styles
+   - Floating elements with subtle animations
+   - Hero images or illustrations
+   - Particle effects or animated shapes
+
+2. **CONTENT SECTIONS** (Never empty):
+   - Dense grid layouts (grid-cols-2 md:grid-cols-3 lg:grid-cols-4)
+   - Overlapping cards with shadows (shadow-2xl)
+   - Background patterns or gradients
+   - Large icons (text-6xl or text-8xl)
+   - Decorative elements (shapes, blobs, waves)
+   - Side-by-side content + images
+
+3. **CARDS & COMPONENTS**:
+   - Glassmorphism: backdrop-blur-lg bg-white/10
+   - Neumorphism: soft shadows, subtle depth
+   - Hover transforms: hover:scale-105 hover:-translate-y-2
+   - Border gradients using ::before pseudo-elements
+   - Icon badges in corners
+   - Progress bars, ratings, tags
+
+4. **TYPOGRAPHY**:
+   - Mix fonts: Poppins (body) + Playfair Display (headings)
+   - Gradient text: bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent
+   - Large numbers/stats: text-6xl font-bold
+   - Decorative underlines and highlights
+
+5. **COLORS & GRADIENTS** (Use vibrant combinations):
+   - Purple-Pink: from-purple-500 via-pink-500 to-red-500
+   - Blue-Cyan: from-blue-500 via-cyan-500 to-teal-500
+   - Orange-Yellow: from-orange-500 via-yellow-500 to-amber-500
+   - Dark modes: from-gray-900 via-purple-900 to-violet-900
+
+═══════════════════════════════════════════════════════════════
+COMPREHENSIVE DESIGN RESOURCES TO USE
+═══════════════════════════════════════════════════════════════
+
+**TAILWIND UTILITIES (Use extensively):**
+- Spacing: p-8 p-16 p-20 py-24 px-6 (generous padding/margin)
+- Grid: grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8
+- Flexbox: flex items-center justify-between space-x-4
+- Sizing: w-full h-screen min-h-screen max-w-7xl
+- Backgrounds: bg-gradient-to-br from-purple-600 to-blue-600
+- Shadows: shadow-lg shadow-xl shadow-2xl drop-shadow-2xl
+- Borders: rounded-xl rounded-2xl rounded-3xl border-2
+- Transforms: scale-105 rotate-3 -rotate-6 translate-y-2
+- Transitions: transition-all duration-300 ease-in-out
+- Hover: hover:scale-105 hover:shadow-2xl hover:brightness-110
+- Opacity: bg-opacity-80 backdrop-blur-lg
+
+**FONT AWESOME ICONS (Use generously):**
+- Solid: fas fa-star, fa-heart, fa-rocket, fa-crown, fa-fire
+- Regular: far fa-check-circle, fa-user, fa-envelope
+- Brands: fab fa-facebook, fa-twitter, fa-instagram
+- Sizes: text-2xl text-4xl text-6xl text-8xl
+- Colors: text-yellow-400 text-purple-500 text-gradient
+
+**ANIMATE.CSS (Add to elements):**
+- Entrance: animate__animated animate__fadeInUp animate__fadeInLeft
+- Attention: animate__bounce animate__pulse animate__heartBeat
+- Exit: animate__fadeOut animate__zoomOut
+- Delays: animate__delay-1s animate__delay-2s
+
+**AOS ANIMATIONS (Scroll animations):**
+- data-aos="fade-up" data-aos-duration="1000"
+- data-aos="zoom-in" data-aos-delay="200"
+- data-aos="flip-left" data-aos-easing="ease-out-cubic"
+
+═══════════════════════════════════════════════════════════════
+MANDATORY HTML STRUCTURE
 ═══════════════════════════════════════════════════════════════
 
 index.html MUST include:
 - <!DOCTYPE html>
-- Tailwind CSS CDN script tag
-- Font Awesome CSS link
-- Google Fonts link
+- ALL CDN links (Tailwind, FontAwesome, Animate.css, AOS, Fonts)
 - Link to styles.css
-- Script tag for app.js at end of body
-- Modern, professional layout
-- Responsive Tailwind classes (md:, lg:, xl:)
-- Font Awesome icons (class="fas fa-icon-name")
+- Full-height hero section (min-h-screen)
+- Multiple content sections with NO blank space
+- Dense grid layouts (3-4 columns)
+- Large icons and images
+- Gradient backgrounds throughout
+- Floating elements with animations
+- Footer with multiple columns
+- Script tags for AOS and app.js at end
 
-styles.css MUST include (MINIMUM 300 lines):
-- Custom CSS variables for colors
-- Modern gradients (linear-gradient, radial-gradient)
-- Box shadows and hover effects
-- Smooth transitions and animations
-- Custom classes for components
-- Responsive media queries
-- Professional color palette
+styles.css MUST include (MINIMUM 500 lines):
+- CSS custom properties (--primary-color, --gradient-1, etc.)
+- Complex gradients (3+ color stops)
+- Glassmorphism effects (backdrop-filter: blur())
+- Custom animations (@keyframes float, pulse, glow)
+- Hover effects with multiple properties
+- Before/after pseudo-elements for decoration
+- Clip-path for unique shapes
+- Transform effects (3D rotations, skews)
+- Advanced shadows (multiple layered shadows)
+- Responsive breakpoints for all screen sizes
 
 app.js MUST include:
-- Smooth scroll functionality
-- Interactive elements
-- Form validation if forms exist
-- Mobile menu toggle if navigation exists
-- Modern ES6+ JavaScript
+- AOS.init() for scroll animations
+- Smooth scroll to sections
+- Interactive hover effects
+- Parallax scrolling effects
+- Counter animations for stats
+- Form validation with visual feedback
+- Mobile menu with smooth transitions
+- Lazy loading for images
+- Intersection Observer for animations
 
 ═══════════════════════════════════════════════════════════════
 EXAMPLE HTML STRUCTURE (YOU MUST FOLLOW THIS):
