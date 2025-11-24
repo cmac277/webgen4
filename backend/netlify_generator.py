@@ -293,8 +293,9 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
             error_msg = f"All models failed. Errors: {'; '.join(all_errors)}"
             logger.error(f"❌ {error_msg}")
             raise Exception(error_msg)
-            
-            # Parse the JSON response
+        
+        # Parse the JSON response
+        try:
             project_data = self._parse_project_response(response)
             
             if not project_data.get("files"):
