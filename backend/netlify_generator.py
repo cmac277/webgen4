@@ -217,8 +217,16 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
         
         response = None
         all_errors = []
+        total_attempts = 0
+        max_total_attempts = 2  # 🚨 CREDIT PROTECTION: Only 2 attempts total before failsafe
         
         for model_idx, (try_provider, try_model) in enumerate(unique_models):
+            # Stop if we've already made too many attempts
+            if total_attempts >= max_total_attempts:
+                logger.warning(f"🛑 STOPPING: Already made {total_attempts} attempts to save credits")
+                logger.warning(f"🛡️ Activating failsafe to prevent credit waste")
+                break
+            
             try:
                 logger.info(f"🤖 Trying model {model_idx + 1}/{len(unique_models)}: {try_provider}/{try_model}")
                 
@@ -232,51 +240,63 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
                 # Set max_tokens to allow complete responses
                 chat.with_params(max_tokens=16000)
                 
-                # Try with moderate retries per model
-                max_retries = 3
+                # 🚨 REDUCED RETRIES: Only 1 retry per model to save credits
+                max_retries = 1  # Changed from 3 to 1
                 last_error = None
                 
                 for attempt in range(max_retries):
+                    total_attempts += 1
+                    
+                    # Check if we've exceeded total attempts
+                    if total_attempts > max_total_attempts:
+                        logger.warning(f"🛑 Exceeded {max_total_attempts} total attempts")
+                        break
+                    
                     try:
-                        logger.info(f"🔄 Attempt {attempt + 1}/{max_retries} with {try_provider}/{try_model}")
+                        logger.info(f"🔄 Attempt {total_attempts}/{max_total_attempts} TOTAL with {try_provider}/{try_model}")
                         
-                        # Request with 90s timeout for complex generations
+                        # Request with 60s timeout (reduced from 90s to fail faster)
                         response = await asyncio.wait_for(
                             chat.send_message(UserMessage(text=user_prompt)),
-                            timeout=90.0
+                            timeout=60.0
                         )
                         logger.info(f"✅ AI Response received: {len(response)} characters from {try_provider}/{try_model}")
                         break  # Success! Exit retry loop
                         
                     except asyncio.TimeoutError:
-                        last_error = "Request timed out after 90 seconds"
-                        logger.warning(f"⏱️ Timeout on attempt {attempt + 1}/{max_retries}")
-                        if attempt < max_retries - 1:
-                            logger.warning(f"   Retrying after 3s...")
-                            await asyncio.sleep(3)
-                            continue
+                        last_error = "Request timed out after 60 seconds"
+                        logger.warning(f"⏱️ Timeout on attempt {total_attempts}")
+                        # 🚨 NO RETRY on timeout - it wastes time and credits
+                        break
                         
                     except Exception as e:
                         error_str = str(e)
                         last_error = error_str
                         logger.error(f"❌ Error: {error_str[:150]}")
                         
-                        # Retry for 502/503 errors
-                        if attempt < max_retries - 1:
-                            is_502 = '502' in error_str or 'BadGateway' in error_str.lower()
-                            is_503 = '503' in error_str or 'service unavailable' in error_str.lower()
-                            
-                            if is_502 or is_503:
-                                logger.warning(f"   Retrying after 3s...")
-                                await asyncio.sleep(3)
-                                continue
+                        # 🚨 CRITICAL: Detect 502/503 errors and STOP immediately
+                        is_502 = '502' in error_str or 'BadGateway' in error_str.lower()
+                        is_503 = '503' in error_str or 'service unavailable' in error_str.lower()
                         
-                        # Don't retry for other errors
+                        if is_502 or is_503:
+                            logger.error(f"🚨 502/503 ERROR DETECTED - API service is down")
+                            logger.error(f"🛡️ Activating IMMEDIATE failsafe to prevent credit waste")
+                            logger.error(f"   Total attempts made: {total_attempts}")
+                            # Set total_attempts high to trigger failsafe
+                            total_attempts = max_total_attempts + 1
+                            break
+                        
+                        # Don't retry for other errors either
                         break
                 
                 # If we got a response, break out of model loop
                 if response is not None:
                     logger.info(f"🎉 SUCCESS with {try_provider}/{try_model}!")
+                    break
+                
+                # If we hit credit protection limit, stop trying other models
+                if total_attempts >= max_total_attempts:
+                    logger.warning(f"🛑 Credit protection activated after {total_attempts} attempts")
                     break
                     
                 # Store this model's error and try next model
@@ -284,8 +304,14 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
                 logger.warning(f"❌ {try_provider}/{try_model} failed, trying next model...")
                 
             except Exception as model_error:
+                total_attempts += 1
                 all_errors.append(f"{try_provider}/{try_model}: {str(model_error)}")
                 logger.error(f"❌ Fatal error with {try_provider}/{try_model}: {str(model_error)[:100]}")
+                
+                # Check for 502 in fatal errors too
+                if '502' in str(model_error) or 'BadGateway' in str(model_error):
+                    logger.error(f"🚨 502 ERROR in fatal error - stopping all attempts")
+                    break
                 continue
         
         # Check if we got a response from any model
