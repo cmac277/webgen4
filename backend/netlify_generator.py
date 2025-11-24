@@ -203,12 +203,14 @@ Requirements:
 Generate complete JSON with all 3 files. Make it visually stunning!"""
 
         # Try multiple models if one fails
-        # If user requested gpt-5 or similar, also try alternative models
+        # ONLY use models that actually work with this Emergent API key
+        # Tested: gpt-5, gpt-5-mini, gpt-4o, gpt-4o-mini all WORK
+        # claude-sonnet-4 and gemini-2.5-pro return "Invalid model name" errors
         models_to_try = [
             (provider, model),  # Try requested model first
             ("openai", "gpt-4o"),  # Fallback to GPT-4o (very reliable)
-            ("google", "gemini-2.5-pro"),  # Try Gemini
-            ("anthropic", "claude-sonnet-4"),  # Try Claude
+            ("openai", "gpt-4o-mini"),  # Fallback to GPT-4o mini
+            ("openai", "gpt-5-mini"),  # Last resort - fast
         ]
         
         # Remove duplicates while preserving order
