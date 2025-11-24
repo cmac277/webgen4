@@ -418,6 +418,9 @@ Generate complete JSON with ALL 3 files. Make it PIXEL-PERFECT and BEAUTIFUL!"""
             # Basic validation only (removed extra requirement checks that burn credits)
             self._validate_netlify_project(project_data)
             
+            # CRITICAL: Validate and enhance HTML to ensure it has design frameworks
+            project_data = self._ensure_design_quality(project_data, prompt)
+            
             logger.info(f"✅ Netlify project ready with {len(project_data['files'])} files")
             return project_data
             
