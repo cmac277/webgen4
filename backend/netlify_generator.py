@@ -240,8 +240,8 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
                 # Set max_tokens to allow complete responses
                 chat.with_params(max_tokens=16000)
                 
-                # 🚨 REDUCED RETRIES: Only 1 retry per model to save credits
-                max_retries = 1  # Changed from 3 to 1
+                # 🚨 BALANCED RETRIES: 2 retries per model for custom generation
+                max_retries = 2  # Balanced between credit protection and custom generation
                 last_error = None
                 
                 for attempt in range(max_retries):
