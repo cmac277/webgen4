@@ -274,17 +274,14 @@ Generate complete JSON with all 3 files. Make it visually stunning!"""
                         last_error = error_str
                         logger.error(f"❌ Error: {error_str[:150]}")
                         
-                        # 🚨 CRITICAL: Detect 502/503 errors and STOP immediately
+                        # 🚨 Detect 502/503 errors but DON'T stop - try next model
                         is_502 = '502' in error_str or 'BadGateway' in error_str.lower()
                         is_503 = '503' in error_str or 'service unavailable' in error_str.lower()
                         
                         if is_502 or is_503:
-                            logger.error(f"🚨 502/503 ERROR DETECTED - API service is down")
-                            logger.error(f"🛡️ Activating IMMEDIATE failsafe to prevent credit waste")
-                            logger.error(f"   Total attempts made: {total_attempts}")
-                            # Set total_attempts high to trigger failsafe
-                            total_attempts = max_total_attempts + 1
-                            break
+                            logger.warning(f"⚠️ 502/503 error on {try_provider}/{try_model} - will try next model")
+                            # Don't stop - let the system try other models
+                            break  # Break from retry loop, continue to next model
                         
                         # Don't retry for other errors either
                         break
