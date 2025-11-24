@@ -2181,15 +2181,27 @@ h1 { font-size: clamp(2.5rem, 6vw, 5rem); }
 h2 { font-size: clamp(2rem, 5vw, 4rem); }
 h3 { font-size: clamp(1.5rem, 4vw, 3rem); }
 
-/* Navigation */
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION - Modern Glassmorphism
+   ═══════════════════════════════════════════════════════════════ */
 .navbar {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 1rem 0;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1.5rem 0;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    padding: 1rem 0;
+    background: rgba(102, 126, 234, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-lg);
 }
 
 .navbar .container {
