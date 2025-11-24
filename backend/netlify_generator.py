@@ -2740,29 +2740,219 @@ h3 { font-size: clamp(1.5rem, 4vw, 3rem); }
         return html
     
     def _generate_interactive_js(self) -> str:
-        """Generate interactive JavaScript"""
-        return '''// Smooth scrolling for navigation links
+        """Generate comprehensive interactive JavaScript with AOS and advanced features"""
+        return '''// ═══════════════════════════════════════════════════════════════
+// ULTRA-INTERACTIVE JAVASCRIPT WITH ADVANCED FEATURES
+// ═══════════════════════════════════════════════════════════════
+
+// Initialize AOS (Animate On Scroll) Library
+if (typeof AOS !== 'undefined') {
+    AOS.init({
+        duration: 1000,
+        easing: 'ease-in-out-cubic',
+        once: false,
+        mirror: true,
+        offset: 100,
+        delay: 100,
+        anchorPlacement: 'top-bottom'
+    });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SMOOTH SCROLLING
+// ═══════════════════════════════════════════════════════════════
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            target.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start'
+            });
         }
     });
 });
 
-// Form submission handler
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+// ═══════════════════════════════════════════════════════════════
+// NAVBAR SCROLL EFFECT
+// ═══════════════════════════════════════════════════════════════
+const navbar = document.querySelector('.navbar');
+let lastScroll = 0;
+
+window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+    
+    // Add scrolled class for styling
+    if (currentScroll > 50) {
+        navbar?.classList.add('scrolled');
+    } else {
+        navbar?.classList.remove('scrolled');
+    }
+    
+    // Hide/show navbar on scroll
+    if (currentScroll > lastScroll && currentScroll > 500) {
+        navbar?.style.transform = 'translateY(-100%)';
+    } else {
+        navbar?.style.transform = 'translateY(0)';
+    }
+    
+    lastScroll = currentScroll;
+});
+
+// ═══════════════════════════════════════════════════════════════
+// FORM HANDLING WITH VALIDATION
+// ═══════════════════════════════════════════════════════════════
+const forms = document.querySelectorAll('form');
+forms.forEach(form => {
+    form.addEventListener('submit', function(e) {
         e.preventDefault();
-        alert('Thank you for your message! We will get back to you soon.');
-        this.reset();
+        
+        // Add loading state
+        const submitBtn = this.querySelector('[type="submit"]');
+        const originalText = submitBtn?.textContent;
+        if (submitBtn) {
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+        }
+        
+        // Simulate form submission
+        setTimeout(() => {
+            if (submitBtn) {
+                submitBtn.textContent = '✓ Sent!';
+                submitBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            }
+            
+            // Show success message
+            const successMsg = document.createElement('div');
+            successMsg.className = 'form-success animate__animated animate__fadeInUp';
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Thank you! We will get back to you soon.';
+            successMsg.style.cssText = 'padding: 1rem; background: #d1fae5; color: #065f46; border-radius: 10px; margin-top: 1rem; text-align: center;';
+            this.appendChild(successMsg);
+            
+            // Reset form
+            this.reset();
+            
+            // Reset button after delay
+            setTimeout(() => {
+                if (submitBtn) {
+                    submitBtn.textContent = originalText || 'Submit';
+                    submitBtn.disabled = false;
+                    submitBtn.style.background = '';
+                }
+                successMsg.remove();
+            }, 3000);
+        }, 1500);
+    });
+});
+
+// ═══════════════════════════════════════════════════════════════
+// COUNTER ANIMATION FOR STATS
+// ═══════════════════════════════════════════════════════════════
+function animateCounter(element) {
+    const target = parseInt(element.getAttribute('data-count') || element.textContent);
+    const duration = 2000;
+    const increment = target / (duration / 16);
+    let current = 0;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = target.toLocaleString();
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(current).toLocaleString();
+        }
+    }, 16);
+}
+
+// Observe stat counters
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat-number, .counter').forEach(counter => {
+    counterObserver.observe(counter);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// INTERSECTION OBSERVER FOR ANIMATIONS
+// ═══════════════════════════════════════════════════════════════
+const fadeObserverOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, fadeObserverOptions);
+
+// Apply to various elements
+const elementsToAnimate = [
+    '.service-card',
+    '.feature-card',
+    '.card',
+    '.pricing-card',
+    '.testimonial',
+    'section'
+];
+
+elementsToAnimate.forEach(selector => {
+    document.querySelectorAll(selector).forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(40px)';
+        element.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        fadeObserver.observe(element);
+    });
+});
+
+// ═══════════════════════════════════════════════════════════════
+// PARALLAX EFFECT
+// ═══════════════════════════════════════════════════════════════
+window.addEventListener('scroll', () => {
+    const parallaxElements = document.querySelectorAll('.parallax');
+    parallaxElements.forEach(element => {
+        const speed = element.getAttribute('data-speed') || 0.5;
+        const yPos = -(window.pageYOffset * parseFloat(speed));
+        element.style.transform = `translateY(${yPos}px)`;
+    });
+});
+
+// ═══════════════════════════════════════════════════════════════
+// MOBILE MENU TOGGLE
+// ═══════════════════════════════════════════════════════════════
+const menuToggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.navbar')) {
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+        }
     });
 }
 
-// CTA button handler
+// ═══════════════════════════════════════════════════════════════
+// CTA BUTTON HANDLERS
+// ═══════════════════════════════════════════════════════════════
 document.querySelectorAll('.cta-button').forEach(button => {
     button.addEventListener('click', function() {
         const contactSection = document.getElementById('contact');
@@ -2772,27 +2962,47 @@ document.querySelectorAll('.cta-button').forEach(button => {
     });
 });
 
-// Add fade-in animation on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
+// Add ripple effect to buttons
+document.querySelectorAll('button, .btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        this.appendChild(ripple);
+        
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = e.clientX - rect.left - size/2 + 'px';
+        ripple.style.top = e.clientY - rect.top - size/2 + 'px';
+        
+        setTimeout(() => ripple.remove(), 600);
+    });
+});
 
-const observer = new IntersectionObserver((entries) => {
+// ═══════════════════════════════════════════════════════════════
+// LAZY LOADING IMAGES
+// ═══════════════════════════════════════════════════════════════
+const imageObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            const img = entry.target;
+            if (img.dataset.src) {
+                img.src = img.dataset.src;
+                img.classList.add('loaded');
+                imageObserver.unobserve(img);
+            }
         }
     });
-}, observerOptions);
-
-document.querySelectorAll('.service-card').forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(30px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(card);
 });
+
+document.querySelectorAll('img[data-src]').forEach(img => {
+    imageObserver.observe(img);
+});
+
+// ═══════════════════════════════════════════════════════════════
+// PAGE LOADED
+// ═══════════════════════════════════════════════════════════════
+console.log('🚀 Website fully loaded with advanced interactivity!');
 
 console.log('🚀 Website loaded successfully!');'''
     
