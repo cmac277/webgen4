@@ -128,6 +128,18 @@ class NetlifyGenerator:
         # REMOVED: Health check and analysis to save credits and time
         # These extra API calls were burning credits unnecessarily
         logger.info("⚡ AI GENERATION: Creating custom website with design quality")
+        
+        # Search for relevant images based on prompt
+        from image_search_service import ImageSearchService
+        image_service = ImageSearchService()
+        image_data = await image_service.search_contextual_images(prompt)
+        
+        hero_image_url = image_data.get("hero_image")
+        section_images = image_data.get("section_images", [])
+        
+        logger.info(f"🖼️ Found hero image: {bool(hero_image_url)}")
+        logger.info(f"🖼️ Found {len(section_images)} section images")
+        
         # HIGH-QUALITY system prompt for AI generation
         system_prompt = """You are an EXPERT web developer creating STUNNING, PREMIUM-QUALITY websites.
 
