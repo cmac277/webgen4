@@ -128,150 +128,37 @@ class NetlifyGenerator:
         # REMOVED: Health check and analysis to save credits and time
         # These extra API calls were burning credits unnecessarily
         logger.info("⚡ AI GENERATION: Creating custom website with design quality")
-        
-        # Clean, direct system prompt for AI generation
-        system_prompt = """You are an expert web developer. Create beautiful, modern, responsive websites with stunning design.
+        # SIMPLE, DIRECT system prompt for AI generation
+        system_prompt = """You are an expert web developer creating beautiful, modern, professional websites.
 
-🎯 CRITICAL: Include ALL these CDN links in <head>:
+Include in <head>:
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 
 Before </body>:
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="app.js"></script>
 
-═══════════════════════════════════════════════════════════════
-DESIGN REQUIREMENTS
-═══════════════════════════════════════════════════════════════
+DESIGN:
+- Vibrant gradients appropriate for the topic
+- Large typography (text-5xl, text-6xl)
+- Modern cards with shadows
+- Font Awesome icons
+- Dense layouts, NO blank space
+- Responsive (sm:, md:, lg:)
 
-**CREATE BEAUTIFUL, UNIQUE DESIGNS:**
-
-1. Use vibrant gradient backgrounds (vary colors based on the topic)
-2. Large, bold typography (text-5xl, text-6xl for headlines)
-3. Modern card layouts with shadows (shadow-xl, shadow-2xl)
-4. Font Awesome icons throughout (text-4xl, text-6xl sizes)
-5. Smooth animations with AOS (data-aos="fade-up")
-6. Dense, visually rich layouts with NO empty space
-7. Professional color schemes appropriate for the topic
-8. Hover effects on all interactive elements
-
-**ENSURE READABILITY:**
-- If using background images, add dark overlay: bg-black/50
-- Use high contrast: dark text on light, light text on dark
-- Proper spacing with Tailwind (p-8, py-16, px-6)
-
-**LAYOUT STRUCTURE:**
-- Full-height hero section (min-h-screen) with centered content
-- Multiple content sections with varied grid layouts
-- Responsive design (use sm:, md:, lg: prefixes)
-- Navigation bar with links
-- Footer with copyright
-
-═══════════════════════════════════════════════════════════════
-DESIGN TOOLS AVAILABLE
-═══════════════════════════════════════════════════════════════
-
-**TAILWIND CSS:** Use extensively for modern styling
-- Gradients: bg-gradient-to-r from-purple-600 to-blue-600
-- Shadows: shadow-xl shadow-2xl
-- Spacing: p-8 py-16 gap-8
-- Grid: grid-cols-1 md:grid-cols-3 lg:grid-cols-4
-
-**FONT AWESOME:** Icons for visual appeal
-- fas fa-star, fa-rocket, fa-heart, fa-shield
-- Sizes: text-4xl text-6xl text-8xl
-
-**ANIMATE.CSS:** Entrance animations
-- animate__animated animate__fadeInUp
-
-**AOS:** Scroll animations
-- data-aos="fade-up" on section elements
-
-═══════════════════════════════════════════════════════════════
-MANDATORY HTML STRUCTURE
-═══════════════════════════════════════════════════════════════
-
-index.html MUST include:
-- <!DOCTYPE html>
-- ALL CDN links (Tailwind, FontAwesome, Animate.css, AOS, Fonts)
-- Link to styles.css
-- Full-height hero section (min-h-screen)
-- Multiple content sections with NO blank space
-- Dense grid layouts (3-4 columns)
-- Large icons and images
-- Gradient backgrounds throughout
-- Floating elements with animations
-- Footer with multiple columns
-- Script tags for AOS and app.js at end
-
-styles.css MUST include (MINIMUM 500 lines):
-- CSS custom properties (--primary-color, --gradient-1, etc.)
-- Complex gradients (3+ color stops)
-- Glassmorphism effects (backdrop-filter: blur())
-- Custom animations (@keyframes float, pulse, glow)
-- Hover effects with multiple properties
-- Before/after pseudo-elements for decoration
-- Clip-path for unique shapes
-- Transform effects (3D rotations, skews)
-- Advanced shadows (multiple layered shadows)
-- Responsive breakpoints for all screen sizes
-
-app.js MUST include:
-- AOS.init() for scroll animations
-- Smooth scroll to sections
-- Interactive hover effects
-- Parallax scrolling effects
-- Counter animations for stats
-- Form validation with visual feedback
-- Mobile menu with smooth transitions
-- Lazy loading for images
-- Intersection Observer for animations
-
-═══════════════════════════════════════════════════════════════
-EXAMPLE HTML STRUCTURE (YOU MUST FOLLOW THIS):
-═══════════════════════════════════════════════════════════════
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Title</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <!-- Content with Tailwind classes -->
-    <script src="app.js"></script>
-</body>
-</html>
-
-═══════════════════════════════════════════════════════════════
-OUTPUT FORMAT - STRICT JSON
-═══════════════════════════════════════════════════════════════
-
+OUTPUT JSON:
 {
   "files": {
-    "index.html": "COMPLETE HTML with ALL CDN links",
-    "styles.css": "COMPLETE CSS (300+ lines with gradients, shadows, animations)",
-    "app.js": "COMPLETE JavaScript with interactivity"
+    "index.html": "Complete HTML",
+    "styles.css": "Custom CSS (500+ lines)",
+    "app.js": "JavaScript"
   }
 }
 
-RULES:
-- Escape quotes: \\"
-- Escape newlines: \\n
-- NO markdown ```
-- Start with { end with }
-- HTML MUST have ALL CDN links
-- CSS MUST be substantial (300+ lines)
+Make it beautiful and unique!"""
 
-═══════════════════════════════════════════════════════════════
 """
         
         # ULTRA-EXPLICIT user prompt with TOPIC ANALYSIS
