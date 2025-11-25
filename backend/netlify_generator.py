@@ -2489,7 +2489,7 @@ h3 { font-size: clamp(1.5rem, 4vw, 3rem); }
             logger.info("✅ Enhanced HTML with CDN links")
         
         # If CSS is too small or missing, generate proper CSS
-        if len(css) < 500:
+        if len(css) < 1000:
             logger.warning(f"⚠️ CSS too small ({len(css)} chars) - generating comprehensive CSS...")
             css = self._generate_modern_css()
             files["styles.css"] = css
