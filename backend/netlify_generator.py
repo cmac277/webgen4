@@ -542,15 +542,37 @@ MANDATORY DESIGN FEATURES
    - Icon badges in corners
    - AOS scroll animations (data-aos="fade-up")
 
-✅ styles.css REQUIREMENTS (MINIMUM 500 lines):
-   - 10+ CSS custom properties for colors
-   - 5+ complex gradients with 3+ colors
-   - Glassmorphism: backdrop-filter: blur(16px)
-   - Multiple @keyframes animations (float, pulse, glow, rotate)
-   - Advanced shadows: box-shadow: 0 20px 60px rgba()
-   - Pseudo-elements for decorations (::before, ::after)
-   - Clip-path for unique shapes
-   - Transform-style: preserve-3d for 3D effects
+✅ styles.css REQUIREMENTS (MINIMUM 500 lines, TOPIC-SPECIFIC):
+
+   CRITICAL: Generate CUSTOM CSS based on the project's aesthetic, NOT generic blocks!
+
+   Must Include (customized to topic colors):
+   - CSS custom properties: --primary-color, --secondary-color (from topic palette)
+   - Topic-specific gradients: --hero-gradient, --card-gradient, --accent-gradient
+   - Custom animations matching the topic mood (elegant float vs energetic bounce)
+   - Unique hover states not achievable with Tailwind alone
+   - Custom clip-paths for decorative elements (if creative topic)
+   - Glassmorphism effects (if modern/tech topic)
+   - Proper z-index layers for overlapping elements
+   - Responsive breakpoints with topic-appropriate adjustments
+   
+   Example for Finance (Blue/Green):
+   ```css
+   :root {
+       --primary-color: #2563eb;
+       --secondary-color: #059669;
+       --hero-gradient: linear-gradient(135deg, #1e40af 0%, #047857 100%);
+   }
+   ```
+   
+   Example for Creative Agency (Teal/Coral):
+   ```css
+   :root {
+       --primary-color: #14b8a6;
+       --secondary-color: #f97316;
+       --hero-gradient: linear-gradient(135deg, #0d9488 0%, #ea580c 100%);
+   }
+   ```
 
 ✅ app.js REQUIREMENTS:
    - AOS.init() with settings
