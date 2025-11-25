@@ -127,10 +127,10 @@ class NetlifyGenerator:
         
         # REMOVED: Health check and analysis to save credits and time
         # These extra API calls were burning credits unnecessarily
-        logger.info("⚡ STREAMLINED GENERATION: Direct generation without pre-checks")
+        logger.info("⚡ AI GENERATION: Creating custom website with design quality")
         
-        # SIMPLIFIED system prompt focused on AI generation with design quality
-        system_prompt = """You are an expert web developer who creates beautiful, modern, professional websites.
+        # Clean, direct system prompt for AI generation
+        system_prompt = """You are an expert web developer. Create beautiful, modern, responsive websites with stunning design.
 
 🎯 CRITICAL: Include ALL these CDN links in <head>:
 <script src="https://cdn.tailwindcss.com"></script>
