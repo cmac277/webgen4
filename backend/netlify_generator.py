@@ -229,8 +229,18 @@ OUTPUT JSON:
 
 MAKE IT PREMIUM QUALITY!"""
         
+        # Build image URLs section for the prompt
+        images_section = ""
+        if hero_image_url:
+            images_section += f"\n🖼️ HERO IMAGE URL: {hero_image_url}"
+        if section_images:
+            images_section += f"\n🖼️ SECTION IMAGES ({len(section_images)} available):"
+            for idx, img in enumerate(section_images, 1):
+                images_section += f"\n   Image {idx}: {img['url']}"
+        
         # HIGH-QUALITY user prompt
         user_prompt = f"""Create a PREMIUM, STUNNING, HIGH-QUALITY website for: "{prompt}"
+{images_section}
 
 🚨 CRITICAL REQUIREMENTS - MUST IMPLEMENT:
 
