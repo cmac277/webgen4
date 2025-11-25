@@ -189,28 +189,50 @@ OUTPUT JSON:
 
 MAKE IT PREMIUM QUALITY!"""
         
-        # SIMPLE, DIRECT user prompt
-        user_prompt = f"""Create a stunning, modern website for: "{prompt}"
+        # HIGH-QUALITY user prompt
+        user_prompt = f"""Create a PREMIUM, STUNNING, HIGH-QUALITY website for: "{prompt}"
 
-Requirements:
-- Use vibrant gradients and colors appropriate for the topic
-- Large, bold headlines (text-5xl, text-6xl)
-- Modern cards with shadows (shadow-xl)
-- Font Awesome icons
-- Dense layouts with NO blank space
-- Professional design matching the topic
-- Fully responsive
+🎨 PREMIUM DESIGN REQUIREMENTS:
 
-Generate JSON:
-{{
-  "files": {{
-    "index.html": "Complete HTML with CDN links",
-    "styles.css": "Custom CSS (500+ lines)",
-    "app.js": "JavaScript with interactions"
-  }}
-}}
+**HERO SECTION:**
+- Full screen height (min-h-screen)
+- MASSIVE headline: text-6xl md:text-7xl lg:text-8xl font-bold
+- Stunning 3-color gradient background: bg-gradient-to-br from-[color1] via-[color2] to-[color3]
+- 2-3 premium CTA buttons with shadows and hover effects
+- Decorative Font Awesome icons (text-8xl)
 
-Make it beautiful, unique, and professional!"""
+**IMAGES - CRITICAL FIX:**
+❌ DO NOT use <img> tags with broken src
+✅ USE stunning CSS gradient backgrounds instead
+✅ USE large Font Awesome icons as visuals (fas fa-icon text-8xl)
+✅ USE background patterns with CSS
+
+**CONTENT:**
+- 3-4 sections minimum (About, Features, Services, Contact)
+- Dense grids: grid-cols-1 md:grid-cols-3 lg:grid-cols-4
+- Premium cards: shadow-2xl rounded-2xl with hover:scale-105
+- HUGE Font Awesome icons (text-6xl, text-7xl, text-8xl)
+- Gradient text for emphasis
+- NO blank space - every section must be visually rich
+
+**COLORS:**
+- Vibrant 3-color gradients throughout
+- High contrast
+- Professional scheme for the topic
+
+**TYPOGRAPHY:**
+- Extra large headlines (text-6xl, text-7xl, text-8xl)
+- Bold fonts (font-bold, font-extrabold)
+- Generous spacing (leading-relaxed)
+
+**SPACING:**
+- Generous padding: p-12, p-16, py-20, py-24
+- Large gaps: gap-8, gap-12
+- Breathing room but NO emptiness
+
+Generate complete JSON with ALL 3 files (HTML with ALL CDN links, comprehensive CSS 600+ lines, interactive JS).
+
+MAKE IT PREMIUM QUALITY - stunning, professional, and visually impressive!"""
 
         # Try multiple models if one fails
         # ONLY use models that actually work with this Emergent API key
