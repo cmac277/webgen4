@@ -218,6 +218,27 @@ MAKE IT PREMIUM QUALITY!"""
         # HIGH-QUALITY user prompt
         user_prompt = f"""Create a PREMIUM, STUNNING, HIGH-QUALITY website for: "{prompt}"
 
+🚨 CRITICAL REQUIREMENTS - MUST IMPLEMENT:
+
+**1. FUNCTIONAL BUTTONS (NO ALERT POPUPS!):**
+❌ NEVER use alert() - no popup dialogs allowed
+✅ Make buttons scroll to sections smoothly
+Example: <button onclick="document.getElementById('contact').scrollIntoView({{behavior:'smooth'}})">Contact Us</button>
+
+**2. TEXT CONTRAST (READABLE TEXT):**
+❌ NEVER white text on white background
+❌ NEVER dark text on dark background
+✅ Dark backgrounds → Use text-white or text-gray-100
+✅ Light backgrounds → Use text-gray-900 or text-gray-800
+✅ Ensure ALWAYS readable with high contrast
+
+**3. CENTERED SYMMETRICAL LAYOUTS:**
+✅ Center grid layouts: max-w-7xl mx-auto
+✅ Use justify-center and items-center for flex
+✅ Grid items: place-items-center
+✅ Make layouts balanced and symmetrical
+Example: <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto place-items-center">
+
 🎨 PREMIUM DESIGN REQUIREMENTS:
 
 **HERO SECTION:**
