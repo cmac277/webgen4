@@ -171,39 +171,24 @@ DESIGN REQUIREMENTS
 - Footer with copyright
 
 ═══════════════════════════════════════════════════════════════
-COMPREHENSIVE DESIGN RESOURCES TO USE
+DESIGN TOOLS AVAILABLE
 ═══════════════════════════════════════════════════════════════
 
-**TAILWIND UTILITIES (Use extensively):**
-- Spacing: p-8 p-16 p-20 py-24 px-6 (generous padding/margin)
-- Grid: grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8
-- Flexbox: flex items-center justify-between space-x-4
-- Sizing: w-full h-screen min-h-screen max-w-7xl
-- Backgrounds: bg-gradient-to-br from-purple-600 to-blue-600
-- Shadows: shadow-lg shadow-xl shadow-2xl drop-shadow-2xl
-- Borders: rounded-xl rounded-2xl rounded-3xl border-2
-- Transforms: scale-105 rotate-3 -rotate-6 translate-y-2
-- Transitions: transition-all duration-300 ease-in-out
-- Hover: hover:scale-105 hover:shadow-2xl hover:brightness-110
-- Opacity: bg-opacity-80 backdrop-blur-lg
+**TAILWIND CSS:** Use extensively for modern styling
+- Gradients: bg-gradient-to-r from-purple-600 to-blue-600
+- Shadows: shadow-xl shadow-2xl
+- Spacing: p-8 py-16 gap-8
+- Grid: grid-cols-1 md:grid-cols-3 lg:grid-cols-4
 
-**FONT AWESOME ICONS (Use generously):**
-- Solid: fas fa-star, fa-heart, fa-rocket, fa-crown, fa-fire
-- Regular: far fa-check-circle, fa-user, fa-envelope
-- Brands: fab fa-facebook, fa-twitter, fa-instagram
-- Sizes: text-2xl text-4xl text-6xl text-8xl
-- Colors: text-yellow-400 text-purple-500 text-gradient
+**FONT AWESOME:** Icons for visual appeal
+- fas fa-star, fa-rocket, fa-heart, fa-shield
+- Sizes: text-4xl text-6xl text-8xl
 
-**ANIMATE.CSS (Add to elements):**
-- Entrance: animate__animated animate__fadeInUp animate__fadeInLeft
-- Attention: animate__bounce animate__pulse animate__heartBeat
-- Exit: animate__fadeOut animate__zoomOut
-- Delays: animate__delay-1s animate__delay-2s
+**ANIMATE.CSS:** Entrance animations
+- animate__animated animate__fadeInUp
 
-**AOS ANIMATIONS (Scroll animations):**
-- data-aos="fade-up" data-aos-duration="1000"
-- data-aos="zoom-in" data-aos-delay="200"
-- data-aos="flip-left" data-aos-easing="ease-out-cubic"
+**AOS:** Scroll animations
+- data-aos="fade-up" on section elements
 
 ═══════════════════════════════════════════════════════════════
 MANDATORY HTML STRUCTURE
