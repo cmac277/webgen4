@@ -2837,15 +2837,34 @@ if (menuToggle && navLinks) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CTA BUTTON HANDLERS
+// BUTTON HANDLERS (NO ALERT POPUPS!)
 // ═══════════════════════════════════════════════════════════════
-document.querySelectorAll('.cta-button').forEach(button => {
-    button.addEventListener('click', function() {
+
+// 🚨 CRITICAL: All buttons scroll to sections - NO alert() popups!
+
+// CTA buttons scroll to contact
+document.querySelectorAll('.cta-button, .btn-primary, button[data-scroll]').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
         const contactSection = document.getElementById('contact');
         if (contactSection) {
-            contactSection.scrollIntoView({ behavior: 'smooth' });
+            contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     });
+});
+
+// Generic buttons - check for data-target attribute
+document.querySelectorAll('button:not([type="submit"])').forEach(button => {
+    if (!button.hasAttribute('onclick') && !button.closest('form')) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Scroll to contact by default
+            const contactSection = document.getElementById('contact');
+            if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
 });
 
 // Add ripple effect to buttons
