@@ -277,41 +277,82 @@ Alternate content alignment:
 
 ✅ USE THESE DESIGN PATTERNS (VARY THEM):
 
-1. **HERO SECTIONS** (Full viewport height):
-   - Large bold headlines (text-5xl md:text-6xl lg:text-7xl font-bold)
-   - Gradient backgrounds (from-purple-600 via-pink-600 to-blue-600)
-   - Multiple CTAs with different styles
-   - Floating elements with subtle animations
-   - Hero images or illustrations
-   - Particle effects or animated shapes
+1. **HERO SECTIONS** (Full viewport, VARY the approach):
+   
+   Option A - Center Bold:
+   - Massive headline (text-5xl md:text-6xl lg:text-7xl)
+   - Center-aligned with gradient background
+   - Dual CTAs side-by-side
+   
+   Option B - Split Hero:
+   - Left: Large headline (text-4xl md:text-5xl) + description
+   - Right: Hero image or illustration
+   - Single prominent CTA
+   
+   Option C - Minimal Elegant:
+   - Moderate headline (text-4xl md:text-5xl font-light)
+   - Subtle background with overlay
+   - Clean, spacious design
+   
+   Always include: Proper z-indexing, readable text, topic-appropriate colors
 
-2. **CONTENT SECTIONS** (Never empty):
-   - Dense grid layouts (grid-cols-2 md:grid-cols-3 lg:grid-cols-4)
-   - Overlapping cards with shadows (shadow-2xl)
-   - Background patterns or gradients
-   - Large icons (text-6xl or text-8xl)
-   - Decorative elements (shapes, blobs, waves)
-   - Side-by-side content + images
+2. **CONTENT SECTIONS** (VARY grid patterns):
+   
+   Features Section:
+   - Vary: grid-cols-1 md:grid-cols-2 lg:grid-cols-3 OR grid-cols-2 md:grid-cols-4
+   - Icons: Large (text-5xl) and topic-relevant (fa-shield for security, fa-rocket for speed)
+   - Cards with proper shadows and hover effects
+   
+   About Section:
+   - Use asymmetric layout: Image left/text right OR text left/image right
+   - Alternate on each generation
+   
+   Services/Products:
+   - Dense grid OR list view with side images
+   - Vary card sizes and layouts
 
-3. **CARDS & COMPONENTS**:
-   - Glassmorphism: backdrop-blur-lg bg-white/10
-   - Neumorphism: soft shadows, subtle depth
-   - Hover transforms: hover:scale-105 hover:-translate-y-2
-   - Border gradients using ::before pseudo-elements
-   - Icon badges in corners
-   - Progress bars, ratings, tags
+3. **CARDS & COMPONENTS** (Choose style per topic):
+   
+   Modern Tech → Glassmorphism:
+   - backdrop-blur-lg bg-white/10 border border-white/20
+   
+   Corporate/Finance → Clean Cards:
+   - bg-white shadow-xl rounded-lg
+   
+   Creative/Art → Unique Shapes:
+   - Custom clip-paths, rounded-3xl, asymmetric
+   
+   Always: Hover effects (hover:scale-105), proper shadows, semantic icons
 
-4. **TYPOGRAPHY**:
-   - Mix fonts: Poppins (body) + Playfair Display (headings)
-   - Gradient text: bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent
-   - Large numbers/stats: text-6xl font-bold
-   - Decorative underlines and highlights
+4. **TYPOGRAPHY** (Topic-aware sizing):
+   
+   Corporate/Professional:
+   - Headlines: text-4xl md:text-5xl (moderate, professional)
+   - Font: Montserrat headings, Poppins body
+   
+   Creative/Bold:
+   - Headlines: text-5xl md:text-6xl lg:text-7xl (large, bold)
+   - Font: Bebas Neue headings, Poppins body
+   
+   Elegant/Luxury:
+   - Headlines: text-4xl md:text-5xl font-light (elegant, refined)
+   - Font: Lora headings, Poppins body
+   
+   Always: Gradient text for emphasis, proper line-height, responsive sizing
 
-5. **COLORS & GRADIENTS** (Use vibrant combinations):
-   - Purple-Pink: from-purple-500 via-pink-500 to-red-500
-   - Blue-Cyan: from-blue-500 via-cyan-500 to-teal-500
-   - Orange-Yellow: from-orange-500 via-yellow-500 to-amber-500
-   - Dark modes: from-gray-900 via-purple-900 to-violet-900
+5. **ANIMATION USAGE** (STRATEGIC, NOT EXCESSIVE):
+   
+   ✅ DO animate (sparingly):
+   - Hero headline: animate__fadeInUp
+   - Primary CTAs: animate__pulse (subtle)
+   - Key sections: data-aos="fade-up" (one animation per section)
+   
+   ❌ DON'T animate:
+   - Every single element (causes distraction)
+   - Navigation items individually
+   - All text blocks
+   
+   Rule: Max 3-5 animated elements per page for key emphasis
 
 ═══════════════════════════════════════════════════════════════
 COMPREHENSIVE DESIGN RESOURCES TO USE
