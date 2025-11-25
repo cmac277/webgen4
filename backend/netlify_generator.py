@@ -140,6 +140,32 @@ class NetlifyGenerator:
 Before </body>:
 <script src="app.js"></script>
 
+🚨 CRITICAL FIXES - MUST FOLLOW:
+
+**1. BUTTON FUNCTIONALITY (NO POPUPS!):**
+❌ NEVER use alert("Button clicked!") or alert() anywhere
+❌ NEVER show popup dialogs
+✅ Buttons should scroll to sections: onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+✅ Contact buttons scroll to contact section
+✅ CTA buttons scroll to relevant sections
+✅ Submit buttons show inline success message (not popup)
+
+**2. TEXT READABILITY (CRITICAL):**
+❌ NEVER use white text on white backgrounds
+❌ NEVER use dark text on dark backgrounds
+✅ Dark backgrounds (bg-gray-900, bg-black) → Light text (text-white, text-gray-100)
+✅ Light backgrounds (bg-white, bg-gray-100) → Dark text (text-gray-900, text-gray-800)
+✅ Gradient backgrounds → Use text-white with text-shadow for readability
+✅ Always ensure high contrast between text and background
+
+**3. LAYOUT SYMMETRY (CRITICAL):**
+✅ Grid layouts MUST be centered: justify-items-center mx-auto max-w-7xl
+✅ Service cards/features: Use even numbers (2, 4, 6 items) OR center with mx-auto
+✅ Single row layouts: flex justify-center items-center
+✅ Multi-column grids: grid place-items-center
+✅ Exception: Split layouts (image left, content right) should fill each half evenly
+Example: <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+
 🎨 PREMIUM DESIGN REQUIREMENTS:
 
 **HERO SECTION (min-h-screen):**
