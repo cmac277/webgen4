@@ -272,11 +272,12 @@ Example: <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto pla
 - 2-3 premium CTA buttons with shadows and hover effects
 - Decorative Font Awesome icons (text-8xl)
 
-**IMAGES - CRITICAL FIX:**
-❌ DO NOT use <img> tags with broken src
-✅ USE stunning CSS gradient backgrounds instead
-✅ USE large Font Awesome icons as visuals (fas fa-icon text-8xl)
-✅ USE background patterns with CSS
+**IMAGES - USE PROVIDED URLs:**
+✅ USE the hero image URL for hero section background or img tag
+✅ USE section images for About, Features, Services sections
+✅ Add <img src="url" alt="description" class="w-full h-96 object-cover rounded-xl">
+✅ If images provided, MUST use them in the design
+✅ If NO images provided, use CSS gradients + Font Awesome icons
 
 **CONTENT:**
 - 3-4 sections minimum (About, Features, Services, Contact)
